@@ -35,9 +35,9 @@ public class TestDao extends Dao {
 			statement = connection.prepareStatement
 					("select * from test where student_no = ?, subject_cd = ?, school_cd = ?, no = ? ");
 			//プリペアードステートメントに値をバインド
-			statement.setStudent(1, student);
-			statement.setSubject(2, subject);
-			statement.setSchool(3, school);
+			statement.setString(1, student);
+			statement.setString(2, subject);
+			statement.setString(3, school);
 			statement.setInt(4, no);
 
 			//DAOを初期化
@@ -118,6 +118,52 @@ public class TestDao extends Dao {
 		PreparedStatement statement = null;
 		// リザルトセット
 		ResultSet rSet = null;
+		// SQL文の条件
+		String condition = "and ent_year = ? and class_num = ? and subject_cd = ?";
+		// SQL文のソート
+		String order = " order by no asc";
+
+		try{
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement
+					(baseSql + condition + order);
+			// プリペアードステートメントに学校コードをバインド
+			statement.setString(1, school.getCd());
+			// プリペアードステートメントに入学年度をバインド
+			statement.setInt(2, entYear);
+			// プリペアードステートメントにクラス番号をバインド
+			statement.setString(3, classNum);
+			//科目をバインド
+			statement.setString(4,subject);
+
+			// プリペアードステートメントを実行
+			rSet = statement.executeQuery();
+			// リストへの格納処理を実行
+			list = postFilter(rSet, school);
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
+
 
 
 	}
