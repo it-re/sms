@@ -11,6 +11,7 @@ import javax.security.auth.Subject;
 
 import bean.School;
 import bean.Student;
+import bean.Test;
 
 
 public class TestDao extends Dao {
@@ -20,7 +21,7 @@ public class TestDao extends Dao {
 	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 
 		//testインスタンス初期化
-		Test test = new test();
+		Test test = new Test();
 		//データベースへのコネクションを確立
 		Connection connection = getConnection();
 		// プリペアードステートメント
