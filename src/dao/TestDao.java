@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.Subject;
-
 import bean.School;
 import bean.Student;
+import bean.Subject;
 import bean.Test;
 
 
@@ -26,19 +25,19 @@ public class TestDao extends Dao {
 		Connection connection = getConnection();
 		// プリペアードステートメント
 		PreparedStatement statement = null;
-		// プリペアードステートメントを実行
-		ResultSet resultSet = statement.executeQuery();
 
 
 		try{
 			//プリペアードステートメントにSQL分をセット
 			statement = connection.prepareStatement
-					("select * from test where student_no = ?, subject_cd = ?, school_cd = ?, no = ? ");
+				("select * from test where student_no = ?, subject_cd = ?, school_cd = ?, no = ? ");
 			//プリペアードステートメントに値をバインド
-			statement.setString(1, student);
-			statement.setString(2, subject);
-			statement.setString(3, school);
+			statement.setString(1, student.getNo());
+			statement.setString(2, subject.getCd());
+			statement.setString(3, school.getCd());
 			statement.setInt(4, no);
+			// プリペアードステートメントを実行
+			ResultSet resultSet = statement.executeQuery();
 
 			//DAOを初期化
 			StudentDao studentDao = new StudentDao();
@@ -49,11 +48,11 @@ public class TestDao extends Dao {
 				//リザルトセットが存在する場合
 				//テストインスタンスに検索結果をセット
 				test.setStudent(studentDao.get(resultSet.getString("student_no")));
-				test.setSubject(subjectDao.get(resultSet.getString("subject_cd")));
+				test.setSubject(subjectDao.get(resultSet.getString("subject_cd"), school));
 				test.setSchool(schoolDao.get(resultSet.getString("school_cd")));
 			}else{
 				//リザルトセットが存在しない場合
-				//学生インスタンスにnullをセット
+				//テストインスタンスにnullをセット
 				test = null;
 			}
 
@@ -86,16 +85,26 @@ public class TestDao extends Dao {
 
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
+
 		try {
 			//リザルトセットを全件走査
 			while (rSet.next()){
-				//学生インスタンスを初期化
+				//testインスタンスを初期化
 				Test test = new Test();
-				//学生インスタンスに検索結果をセット
-				test.setSubject(rSet.getString("subject"));
-				test.setEntYear(rSet.getInt("ent_year"));
-				test.setString(rSet.getInt("class_num"));
-				test.setStudent(rSet.getString("student_name"));
+
+				//DAOを初期化
+				StudentDao studentDao = new StudentDao();
+				SubjectDao subjectDao = new SubjectDao();
+				SchoolDao schoolDao = new SchoolDao();
+
+
+				//testインスタンスに検索結果をセット
+				//STUDENT_No, SUBJECT_CD, SCHOOL_CD, NO, POINT, CLASS_NUM
+				test.setStudent(studentDao.get(rSet.getString("student_no")));
+				test.setClassNum(rSet.getString("class_num"));
+				test.setSubject(subjectDao.get(rSet.getString("subject_cd"), school));
+				test.setSchool(schoolDao.get(rSet.getString("school_cd")));
+				test.setNo(rSet.getInt("no"));
 				test.setPoint(rSet.getInt("point"));
 				//リストに追加
 				list.add(test);
@@ -134,7 +143,7 @@ public class TestDao extends Dao {
 			// プリペアードステートメントにクラス番号をバインド
 			statement.setString(3, classNum);
 			//科目をバインド
-			statement.setString(4,subject);
+			statement.setString(4,subject.getCd());
 
 			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
@@ -164,8 +173,130 @@ public class TestDao extends Dao {
 
 		return list;
 
-
-
 	}
+
+	public boolean save(List<Test> list)throws Exception{
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		try{
+			//プリペアードステートメントにinsert文をセット
+			statement = connection.prepareStatement
+					( "insert into test (student_no, subject_cd, school_cd, no, point, class_num) values (?, ?, ?, ?, ?, ?)");
+
+			for (Test test : list) {
+				statement.setString(1, test.getStudent().getNo());
+				statement.setString(2, test.getSubject().getCd());
+				statement.setString(3, test.getSchool().getCd());
+				statement.setInt(4, test.getNo());
+				statement.setInt(5, test.getPoint());
+				statement.setString(6, test.getClassNum());
+				count += statement.executeUpdate();
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		if (count > 0) {
+			// 実行件数が1件以上ある場合
+			return true;
+		} else {
+			// 実行件数が0件の場合
+			return false;
+		}
+	}
+
+/**  これいるか？
+	private boolean save(Student student)throws Exception{
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		StudentDao studentDao = new StudentDao();
+
+		try{
+			//DBから学生を取得
+			Student old = studentDao.get(student.getNo());
+			if(old == null){
+				// 学生が存在しなかった場合
+				// プリペアードステートメントにINSERT文をセット
+				statement = connection.prepareStatement("insert into student(no, name, ent_year, class_num, is_attend, school_cd) values(?, ?, ?, ?, ?, ?)");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, student.getNo());
+				statement.setString(2, student.getName());
+				statement.setInt(3, student.getEntYear());
+				statement.setString(4, student.getClassNum());
+				statement.setBoolean(5, student.isAttend());
+				statement.setString(6, student.getSchool().getCd());
+			} else {
+				// 学生が存在した場合
+				// プリペアードステートメントにUPDATE文をセット
+				statement = connection.prepareStatement("update student set name = ?, ent_year = ?, class_num = ?, is_attend = ? where no = ?");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, student.getName());
+				statement.setInt(2, student.getEntYear());
+				statement.setString(3, student.getClassNum());
+				statement.setBoolean(4, student.isAttend());
+				statement.setString(5, student.getNo());
+			}
+
+			// プリペアードステートメントを実行
+			count = statement.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		if (count > 0) {
+			// 実行件数が1件以上ある場合
+			return true;
+		} else {
+			// 実行件数が0件の場合
+			return false;
+		}
+	}
+**/
+
 
 }
