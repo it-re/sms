@@ -134,12 +134,78 @@ public class SubjectDao extends Dao {
 	}
 
 	//saveメソッド - 科目情報を新規登録または更新
-	//引数1 subject - 科目Beanを指定
+	//引数1 subject - 科目Beanを指定 渡すBeanには全てのデータ(学校, 科目コード, 名前)が設定されている必要がある
 	public boolean save(Subject subject) throws Exception {
-		return false;
+
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		// 学校Daoを宣言
+		SchoolDao schoolDao = new SchoolDao();
+		try {
+			// データベースから科目コードと学校コードを取得
+			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
+
+			if (old == null) {
+				// 科目が存在しなかった場合
+				// プリペアードステートメントにINSERT文をセット
+				statement = connection.prepareStatement("INSERT INTO SUBJECT(SCHOOL_CD, CD, NAME) VALUES(?, ?, ?)");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, subject.getSchool().getCd());
+				statement.setString(2, subject.getCd());
+				statement.setString(3, subject.getName());
+			} else {
+				// 学生が存在した場合
+				// プリペアードステートメントにUPDATE文をセット
+				statement = connection.prepareStatement("UPDATE SUBJECT SCHOOL_CD = ?, CD = ?, NAME = ?");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, subject.getSchool().getCd());
+				statement.setString(2, subject.getCd());
+				statement.setString(3, subject.getName());
+			}
+
+			// プリペアードステートメントを実行
+			count = statement.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		if (count > 0) {
+			// 実行件数が1件以上ある場合
+			return true;
+		} else {
+			// 実行件数が0件の場合
+			return false;
+		}
+
 	}
 
+	//deleteメソッド - 科目情報を削除
 	public boolean delete(Subject subject) throws Exception {
+		//制作中
+		//ダミーとしてfalseを返却
 		return false;
 	}
 }
