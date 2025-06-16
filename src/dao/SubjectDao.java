@@ -220,7 +220,7 @@ public class SubjectDao extends Dao {
 			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
 
 			if (old != null) {
-				// 科目が存在した場合、科目を削除
+				// 科目が存在した場合、科目を消す
 				// プリペアードステートメントにDELETE文をセット
 				statement = connection.prepareStatement("DELETE FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
 				// プリペアードステートメントに値をバインド
