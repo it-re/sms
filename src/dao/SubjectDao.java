@@ -147,7 +147,7 @@ public class SubjectDao extends Dao {
 		// 学校Daoを宣言
 		SchoolDao schoolDao = new SchoolDao();
 		try {
-			// データベースから科目コードと学校コードを取得
+			// データベースから科目を取得
 			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
 
 			if (old == null) {
@@ -203,9 +203,57 @@ public class SubjectDao extends Dao {
 	}
 
 	//deleteメソッド - 科目情報を削除
+	//引数1 subject - 科目Beanを指定 渡すBeanにはデータ(学校, 科目コード)が設定されている必要がある
 	public boolean delete(Subject subject) throws Exception {
-		//制作中
-		//ダミーとしてfalseを返却
-		return false;
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		// 学校Daoを宣言
+		SchoolDao schoolDao = new SchoolDao();
+
+		try {
+			// データベースから科目を取得
+			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
+
+			if (old != null) {
+				// 科目が存在しした場合
+				// プリペアードステートメントにDELETE文をセット
+				statement = connection.prepareStatement("DELETE FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, subject.getSchool().getCd());
+				statement.setString(2, subject.getCd());
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		if (count > 0) {
+			// 実行件数が1件以上ある場合
+			return true;
+		} else {
+			// 実行件数が0件の場合
+			return false;
+		}
 	}
 }
