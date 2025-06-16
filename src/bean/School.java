@@ -14,6 +14,7 @@ public class School implements Serializable {
 	 */
 	private String name;
 
+
 	/**
 	 * ゲッター・セッター
 	 */
