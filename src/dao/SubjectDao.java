@@ -134,7 +134,7 @@ public class SubjectDao extends Dao {
 	}
 
 	//saveメソッド - 科目情報を新規登録または更新
-	//引数1 subject - 科目Beanを指定 渡すBeanには全てのデータ(学校, 科目コード, 名前)が設定されている必要がある
+	//引数1 subject - 科目Beanを指定 渡すBeanには追加/変更したい科目のデータ(学校, 科目コード, 名前)が設定されている必要がある
 	public boolean save(Subject subject) throws Exception {
 
 		// コネクションを確立
@@ -151,7 +151,7 @@ public class SubjectDao extends Dao {
 			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
 
 			if (old == null) {
-				// 科目が存在しなかった場合
+				// 科目が存在しなかった場合、科目を新規作成
 				// プリペアードステートメントにINSERT文をセット
 				statement = connection.prepareStatement("INSERT INTO SUBJECT(SCHOOL_CD, CD, NAME) VALUES(?, ?, ?)");
 				// プリペアードステートメントに値をバインド
@@ -159,13 +159,13 @@ public class SubjectDao extends Dao {
 				statement.setString(2, subject.getCd());
 				statement.setString(3, subject.getName());
 			} else {
-				// 学生が存在した場合
+				// 科目が存在した場合、科目名を変更
 				// プリペアードステートメントにUPDATE文をセット
-				statement = connection.prepareStatement("UPDATE SUBJECT SCHOOL_CD = ?, CD = ?, NAME = ?");
+				statement = connection.prepareStatement("UPDATE SUBJECT NAME = ? WHERE SCHOOL_CD = ? AND CD = ?");
 				// プリペアードステートメントに値をバインド
-				statement.setString(1, subject.getSchool().getCd());
-				statement.setString(2, subject.getCd());
-				statement.setString(3, subject.getName());
+				statement.setString(1, subject.getName());
+				statement.setString(2, subject.getSchool().getCd());
+				statement.setString(3, subject.getCd());
 			}
 
 			// プリペアードステートメントを実行
@@ -220,7 +220,7 @@ public class SubjectDao extends Dao {
 			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
 
 			if (old != null) {
-				// 科目が存在しした場合
+				// 科目が存在した場合、科目を削除
 				// プリペアードステートメントにDELETE文をセット
 				statement = connection.prepareStatement("DELETE FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
 				// プリペアードステートメントに値をバインド
