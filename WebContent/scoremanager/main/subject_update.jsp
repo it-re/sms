@@ -24,16 +24,16 @@
 
 				<div>
 					<%-- 画面設計書② --%>
-					<label for="ent_year">科目コード</label><br>
+					<label for="cd">科目コード</label><br>
 
 					<%-- 画面設計書③ --%>
-					<input class="form-control" type="text" id="cd"
+					<input class="form-control" style="border: none; type="text" id="cd"
 					 name="cd" value="${cd}" readonly />
 				</div>
 
 				<%-- 画面設計書④ --%>
 				<div>
-					<label for="no">科目名</label><br>
+					<label for="name">科目名</label><br>
 
 					<%-- 画面設計書⑤ --%>
 					<input class="form-control" type="text" id="name" name="name"
