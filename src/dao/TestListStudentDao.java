@@ -15,7 +15,8 @@ public class TestListStudentDao extends Dao {
 
 	private String baseSql = "SELECT * FROM TEST WHERE STUDENT_NO = ?";
 
-	//postFilterメソッド -
+	// postFilterメソッド - リザルトセットから成績一覧のリストを作成 filterメソッドから呼び出される
+	// 引数1 rSet…成績情報が格納されたリザルトセットを指定
 	private List<TestListStudent> postFilter(ResultSet rSet) throws Exception {
 
 		// リストを宣言
@@ -54,7 +55,8 @@ public class TestListStudentDao extends Dao {
 
 	}
 
-	//filterメソッド -
+	// filterメソッド - 指定した生徒の成績一覧のリストを返す
+	// 引数1 student…成績を取得したい生徒を指定
 	public List<TestListStudent> filter(Student student) throws Exception {
 		// リストを宣言
 		List<TestListStudent> list = new ArrayList<>();
