@@ -30,17 +30,17 @@ public class TestListStudentDao extends Dao {
 			while (rSet.next()) {
 				// リザルトセットから学校番号を取得し
 				// SchoolDaoのgetメソッドでSchoolを取得
-				School school = schoolDao.get(rSet.getString("CD"));
-
+				School school = schoolDao.get(rSet.getString("SCHOOL_CD"));
+				System.out.println(rSet.getString("NO") + school);
 				// SubjectDaoのgetメソッドの引数にリザルトセットの科目コードと先ほどのSchoolを指定
 				// これで科目名を取得する
-				String subjectName = subjectDao.get(rSet.getString("CD"), school).getName();
+				String subjectName = subjectDao.get(rSet.getString("SUBJECT_CD"), school).getName();
 
 				// 学生別成績一覧インスタンスを初期化
 				TestListStudent testListStudent = new TestListStudent();
 				// 学生別成績一覧インスタンスに検索結果をセット
 				testListStudent.setSubjectName(subjectName);
-				testListStudent.setSubjectCd(rSet.getString("CD"));
+				testListStudent.setSubjectCd(rSet.getString("SUBJECT_CD"));
 				testListStudent.setNum(rSet.getInt("NO"));
 				testListStudent.setPoint(rSet.getInt("POINT"));
 				// リストに追加
