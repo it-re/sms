@@ -61,21 +61,7 @@ public class TestRegistAction extends Action {
 
 		//DBからデータを取得
 		//ログインユーザの学校コードをもとに科目番号の一覧を取得
-		List<Test> list = testDao.filter();
-
-		if (entYear != 0 && !classNum.equals("0")) {
-			// 入学年度とクラス番号を指定
-			test = testDao.filter(entYear, classNum, subjectObj, count, teacher.getSchool());
-
-
-
-		} else {
-			errors.put("f1", "クラスを指定する場合は入学年度も指定してください");
-			// リクエストにエラーメッセージをセット
-			req.setAttribute("errors", errors);
-			// 全学生情報を取得
-			students = studentDao.filter(teacher.getSchool(), isAttend);
-		}
+		List<Test> list = testDao.filter(entYear, classNum, subjectObj, count, teacher.getSchool());
 
 
 
