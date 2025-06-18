@@ -1,4 +1,4 @@
-<%-- 科目更新JSP --%>
+<%-- 科目削除JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -19,16 +19,26 @@
 			<%-- 画面設計書の① --%>
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 
-			<%-- 画面設計書の②～⑦のフォーム --%>
+			<%-- 画面設計書の②～④のフォーム --%>
 			<form action="SubjectUpdateExecute.action" method="get">
 
 				<div>
 					<%-- 画面設計書② --%>
+					<p>
+						<label>
+
+						</label>
+					</p>
 					<label for="cd">科目コード</label><br>
 
 					<%-- 画面設計書③ --%>
-					<input class="form-control" style="border: none;" type="text" id="cd"
-					 name="cd" value="${cd}" readonly />
+					<button class="btn btn-danger" id="delete" name="delete" value="delete">削除</button>
+
+					<%-- 画面設計書④ --%>
+					<a href="subject_list.jsp">戻る</a>
+
+
+
 				</div>
 
 				<%-- 画面設計書④ --%>
