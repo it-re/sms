@@ -9,16 +9,16 @@
 
 	<c:param name="content">
 		<div id="wrap_box">
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2">学生情報登録</h2>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2">科目情報登録</h2>
 			<div id="wrap_box">
 				<p class="text-center" style="background-color:#8cc3a9">登録が完了しました</p>
 
 				<br>
 				<br>
 				<br>
-				<a href="StudentCreate.action">戻る</a>
+				<a href="SubjectCreate.action">戻る</a>
 				<a>　　　　　</a>
-				<a href="StudentList.action">学生一覧</a>
+				<a href="SubjectList.action">科目一覧</a>
 			</div>
 		</div>
 	</c:param>
