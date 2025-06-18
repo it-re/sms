@@ -1,4 +1,4 @@
-<%-- 学生更新JSP --%>
+<%-- 科目更新JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -27,7 +27,7 @@
 					<label for="cd">科目コード</label><br>
 
 					<%-- 画面設計書③ --%>
-					<input class="form-control" style="border: none; type="text" id="cd"
+					<input class="form-control" style="border: none;" type="text" id="cd"
 					 name="cd" value="${cd}" readonly />
 				</div>
 
@@ -37,7 +37,7 @@
 
 					<%-- 画面設計書⑤ --%>
 					<input class="form-control" type="text" id="name" name="name"
-					 value="${name}" readonly required maxlength="20"/>
+					 value="${name}" required maxlength="20"/>
 				</div>
 
 				<div class="mx-auto py-2">
