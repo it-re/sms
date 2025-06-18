@@ -15,8 +15,6 @@ public class SubjectCreateAction extends Action {
 		HttpSession session = req.getSession(); // セッション
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
-		// ローカル変数の指定
-		
 
 		// JSPへフォワード
 		req.getRequestDispatcher("subject_create.jsp").forward(req, res);

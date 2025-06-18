@@ -148,7 +148,7 @@ public class SubjectDao extends Dao {
 		SchoolDao schoolDao = new SchoolDao();
 		try {
 			// データベースから科目を取得
-			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
+			Subject old = get(subject.getCd(), subject.getSchool());
 
 			if (old == null) {
 				// 科目が存在しなかった場合、科目を新規作成
@@ -161,7 +161,7 @@ public class SubjectDao extends Dao {
 			} else {
 				// 科目が存在した場合、科目名を変更
 				// プリペアードステートメントにUPDATE文をセット
-				statement = connection.prepareStatement("UPDATE SUBJECT NAME = ? WHERE SCHOOL_CD = ? AND CD = ?");
+				statement = connection.prepareStatement("UPDATE SUBJECT SET NAME = ? WHERE SCHOOL_CD = ? AND CD = ?");
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getName());
 				statement.setString(2, subject.getSchool().getCd());

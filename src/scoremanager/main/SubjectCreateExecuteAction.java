@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.School;
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
@@ -24,22 +23,20 @@ public class SubjectCreateExecuteAction extends Action {
 		String subject_cd = ""; //科目コード
 		String subject_name = ""; //科目名
 		Subject subject = new Subject();
-		School school = new School();
 		SubjectDao subjectDao = new SubjectDao();
 		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
 
 		//リクエストパラメーターの取得
-		subject = subjectDao.get(subject_cd, school);
 		subject_cd = req.getParameter("cd");
 		subject_name = req.getParameter("name");
 
-		if (subject_cd.length() == 3) {
+		if (subject_cd.length() != 3) {
 			errors.put("1", "科目コードは3文字で入力してください。");
 			// リクエストにエラーメッセージをセット
 			req.setAttribute("errors", errors);
 		} else {
 
-			if (subject != null) { // 科目コードが重複している場合
+			if (subjectDao.get(subject_cd, teacher.getSchool())!= null) { // 科目コードが重複している場合
 				errors.put("2", "科目コードが重複しています");
 				// リクエストにエラーメッセージをセット
 				req.setAttribute("errors", errors);
@@ -61,10 +58,10 @@ public class SubjectCreateExecuteAction extends Action {
 		// JSPへフォワード
 		if (errors.isEmpty()) { // エラーメッセージがない場合
 			// 登録完了画面にフォワード
-			req.getRequestDispatcher("student_create_done.jsp").forward(req, res);
+			req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
 		} else { // エラーメッセージがある場合
 			// 登録画面にフォワード
-			req.getRequestDispatcher("StudentCreate.action").forward(req, res);
+			req.getRequestDispatcher("SubjectCreate.action").forward(req, res);
 		}
 	}
 

@@ -44,7 +44,7 @@
 
 				<%-- ⑥ --%>
 				<div class="mx-auto py-2">
-					<input type="button" value="登録">
+					<button class="btn btn-secondary" id="create-button" name="end">登録</button>
 				</div>
 
 			</form>
