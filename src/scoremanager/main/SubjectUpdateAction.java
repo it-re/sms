@@ -5,11 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
-import tool.Action;
-import bean.School;
 import dao.SubjectDao;
+import tool.Action;
+
 
 public class SubjectUpdateAction extends Action {
 
@@ -24,6 +25,7 @@ public class SubjectUpdateAction extends Action {
 		String cd = ""; //科目コード
 		String name = ""; //科目名
 		School school = new School();
+		Subject subject = new Subject();
 		SubjectDao subjectDao = new SubjectDao();
 
 		/* 科目コードを取得する */
@@ -32,12 +34,19 @@ public class SubjectUpdateAction extends Action {
 		/* 科目名を取得する */
 		name = req.getParameter("name");
 
-		/* データを取得する */
+		//学校を取得
+//		school = req.getParameter(schoolDao.teacher.);
+		school = teacher.getSchool();
+
+		/* 1件のデータを取得する */
+		subject = subjectDao.get("subject_cd", school);
 
 		/* リストを取得する */
-		List<Subject>
+//		List<Subject> subjectList = subjectDao.filter(school);
 
 		/* beanで受け取ったデータをローカル変数に代入 */
+		cd = subject.getCd();
+		name = subject.getName();
 
 
 		/* リクエストにそれぞれの値を埋め込む */
@@ -45,7 +54,7 @@ public class SubjectUpdateAction extends Action {
 		req.setAttribute("name", name);
 
 		//JSPへフォワード
-		req.getRequestDispatcher("subject_update.jsp");
+		req.getRequestDispatcher("subject_update.jsp").forward(req, res);;
 	}
 
 }

@@ -1,4 +1,4 @@
-<%-- 科目更新JSP --%>
+<%-- 科目削除完了JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
