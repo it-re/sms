@@ -15,7 +15,7 @@ import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 
-	private String baseSql = "select * from student where school_cd = ?";
+	private String baseSql = "select * from test where school_cd = ?";
 
 	private List<TestListSubject> postFilter(ResultSet rSet
 	)throws Exception{

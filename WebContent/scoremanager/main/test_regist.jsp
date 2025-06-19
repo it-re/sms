@@ -37,8 +37,8 @@
 					</div>
 
 					<div class="col-4">
-						<label class="form-label" for="student-f2-select">科目</label>
-						<select class="form-select" id="student-f2-select" name="f3">
+						<label class="form-label" for="student-f3-select">科目</label>
+						<select class="form-select" id="student-f3-select" name="f3">
 							<option value="0">--------</option>
 							<c:forEach var="subject" items="${subject_cd_set}">
 								<%-- 現在のsubjectと選択されていたf3が一致していた場合selectedを追記 --%>
@@ -48,8 +48,8 @@
 					</div>
 
 					<div class="col-4">
-						<label class="form-label" for="student-f2-select">回数</label>
-						<select class="form-select" id="student-f2-select" name="f4">
+						<label class="form-label" for="student-f4-select">回数</label>
+						<select class="form-select" id="student-f4-select" name="f4">
 							<option value="0">--------</option>
 							<c:forEach var="count" items="${count_set}">
 								<%-- 現在のsubjectと選択されていたf3が一致していた場合selectedを追記 --%>
@@ -72,8 +72,8 @@
 
 
 			<c:choose>
-				<c:when test="${subject.size()>0 }">
-					<div>科目：${subject}(${count})</div>
+				<c:when test="${test.size()>0 }">
+					<div>科目：${test}(${count})</div>
 					<table class="table table-hover">
 						<tr>
 							<th>入学年度</th>
@@ -81,11 +81,12 @@
 							<th>学生番号氏名</th>
 							<th>点数</th>
 						</tr>
-						<c:forEach var="subject" items="${subject}">
+						<c:forEach var="testRecord" items="${subject}">
 							<tr>
 								<td>${subject.year}</td>
 								<td>${subject.class_num}</td>
 								<td>${subject.student_no}</td>
+								<td>${subject.student_name}</td>
 								<td>
 								<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" value="${test.point}">
 								</td>
@@ -98,7 +99,7 @@
 
 				</c:when>
 				<c:otherwise>
-					<div>科目情報が存在しませんでした。</div>
+					<div class="mt-2 text-warning">${errors.get("e1") }></div>
 				</c:otherwise>
 			</c:choose>
 		</section>
