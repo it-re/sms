@@ -22,7 +22,7 @@
 			<%-- 画面設計書の②のフォーム --%>
 			<form action="SubjectUpdateExecute.action" method="get">
 				<p class="text-center">
-				  <label class="form-control" style="background-color:#8cc3a9; padding: 8px 16px; display: inline-block; border-radius: 0;">
+				  <label class="form-control" style="background-color:#8cc3a9; padding: 5px 16px; display: inline-block; border-radius: 0;">
 				    変更が完了しました
 				  </label>
 				</p>

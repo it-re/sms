@@ -39,7 +39,7 @@ public class SubjectUpdateAction extends Action {
 		school = teacher.getSchool();
 
 		/* 1件のデータを取得する */
-		subject = subjectDao.get("subject_cd", school);
+		subject = subjectDao.get(cd, school);
 
 		/* リストを取得する */
 //		List<Subject> subjectList = subjectDao.filter(school);

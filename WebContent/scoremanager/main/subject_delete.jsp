@@ -26,13 +26,17 @@
 					<%-- 画面設計書② --%>
 					<p>
 						<label>
-
+							「${name}(${cd})」を削除してもよろしいですか
 						</label>
 					</p>
-					<label for="cd">科目コード</label><br>
 
 					<%-- 画面設計書③ --%>
 					<button class="btn btn-danger" id="delete" name="delete" value="delete">削除</button>
+
+					<br>
+					<br>
+					<br>
+					<br>
 
 					<%-- 画面設計書④ --%>
 					<a href="subject_list.jsp">戻る</a>
@@ -40,26 +44,7 @@
 
 
 				</div>
-
-				<%-- 画面設計書④ --%>
-				<div>
-					<label for="name">科目名</label><br>
-
-					<%-- 画面設計書⑤ --%>
-					<input class="form-control" type="text" id="name" name="name"
-					 value="${name}" required maxlength="20"/>
-				</div>
-
-				<div class="mx-auto py-2">
-					<%-- 画面設計書⑥ --%>
-					<button class="btn btn-primary" id="change" name="change">変更</button>
-				</div>
 			</form>
-
-
-			<%-- 画面設計書⑦ --%>
-			<a href="subject_list.jsp">戻る</a>
-
 		</section>
 	</c:param>
 </c:import>
