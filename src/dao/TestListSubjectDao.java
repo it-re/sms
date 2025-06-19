@@ -22,6 +22,7 @@ public class TestListSubjectDao extends Dao {
 
 		//リストを初期化
 		List<TestListSubject> list = new ArrayList<>();
+		StudentDao studentDao = new StudentDao();
 
 		try {
 			//リザルトセットを全件走査
@@ -31,7 +32,7 @@ public class TestListSubjectDao extends Dao {
 				Map<Integer, Integer> points = new HashMap<>();
 
 				//listに検索結果をセット
-				testListSubject.setEntYear(rSet.getInt("ent_year"));
+				testListSubject.setEntYear(StudentDao.get(rSet.getInt("ent_year")));
 				testListSubject.setStudentNo(rSet.getString("student_no"));
 				testListSubject.setStudentName(rSet.getString("student_name"));
 				testListSubject.setClassNum(rSet.getString("class_num"));

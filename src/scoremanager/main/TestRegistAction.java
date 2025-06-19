@@ -12,6 +12,7 @@ import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
+import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
@@ -32,6 +33,7 @@ public class TestRegistAction extends Action {
 		String subject = "";
 		String countStr = "";
 		int count = 0;
+		String subject = "";
 		String studentNo = "";
 		String studentName = "";
 		List<Test> test = null;
@@ -41,9 +43,12 @@ public class TestRegistAction extends Action {
 		Student student = new Student();
 		SubjectDao subjectDao = new SubjectDao();
 		TestDao testDao = new TestDao();
+		ClassNumDao classNumDao = new ClassNumDao();
 
 		// 科目コードから 科目情報を取得
 		Subject subjectObj = subjectDao.get(subject, teacher.getSchool());
+		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
+		List<String> list = classNumDao.filter(teacher.getSchool());
 
 
 		//リクエストパラメーターの取得
@@ -69,6 +74,7 @@ public class TestRegistAction extends Action {
 		//レスポンス値をセット
 
 		if(entYear == 0 && classNum == null && subject == null && count == 0){
+			//何もしない
 
 		}else if (entYear != 0 && classNum != null && subject != null && count != 0){
 			//DBからリストを取得
@@ -83,9 +89,9 @@ public class TestRegistAction extends Action {
 
 
 		req.setAttribute("ent_year_set", entYear);
-		req.setAttribute("f2",classNum);
-		req.setAttribute("student_no",studentNo);
-		req.setAttribute("student",studentName);
+		req.setAttribute("class_num_set",list);
+		req.setAttribute("subject_cd_set", subjectObj);
+		req.setAttribute("count_set", count);
 
 		req.setAttribute("test",test);
 
