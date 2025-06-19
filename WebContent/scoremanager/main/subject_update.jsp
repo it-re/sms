@@ -51,7 +51,7 @@
 
 
 			<%-- 画面設計書⑦ --%>
-			<a href="subject_list.jsp">戻る</a>
+			<a href="SubjectList.action">戻る</a>
 
 		</section>
 	</c:param>
