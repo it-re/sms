@@ -15,14 +15,14 @@ import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 
-	private String baseSql = "select * from test where school_cd = ?";
+	private String baseSql =
+		"SELECT test.student_no, test.subject_cd, test.school_cd, test.no, test.point, test.class_num, student.ent_year FROM TEST join student on test.student_no = student.no where tesr.school_cd = ? ";
 
 	private List<TestListSubject> postFilter(ResultSet rSet
 	)throws Exception{
 
 		//リストを初期化
 		List<TestListSubject> list = new ArrayList<>();
-		StudentDao studentDao = new StudentDao();
 
 		try {
 			//リザルトセットを全件走査
@@ -32,7 +32,7 @@ public class TestListSubjectDao extends Dao {
 				Map<Integer, Integer> points = new HashMap<>();
 
 				//listに検索結果をセット
-				testListSubject.setEntYear(StudentDao.get(rSet.getInt("ent_year")));
+				testListSubject.setEntYear(rSet.getInt("ent_year"));
 				testListSubject.setStudentNo(rSet.getString("student_no"));
 				testListSubject.setStudentName(rSet.getString("student_name"));
 				testListSubject.setClassNum(rSet.getString("class_num"));
