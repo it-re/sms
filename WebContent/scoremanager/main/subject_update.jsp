@@ -22,6 +22,9 @@
 			<%-- 画面設計書の②～⑦のフォーム --%>
 			<form action="SubjectUpdateExecute.action" method="get">
 
+				<%-- エラーメッセージ① --%>
+				<div class="mt-2 text-warning">${errors.get("1")}</div>
+
 				<div>
 					<%-- 画面設計書② --%>
 					<label for="cd">科目コード</label><br>
