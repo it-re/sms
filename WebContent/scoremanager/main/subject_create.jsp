@@ -23,6 +23,8 @@
 				<%-- エラーメッセージ① --%>
 				<div class="mt-2 text-warning">${errors.get("1")}</div>
 
+				<%-- エラーメッセージ② --%>
+				<div class="mt-2 text-warning">${errors.get("2")}</div>
 
 				<%-- ② --%>
 				<div>
@@ -30,10 +32,6 @@
 					<%-- ③ --%>
 					<input class="form-control" type="text" id="cd" name="cd" value="${cd}" required maxlength="3" placeholder="科目コードを入力してください" />
 				</div>
-
-				<%-- エラーメッセージ② --%>
-				<div class="mt-2 text-warning">${errors.get("2")}</div>
-
 
 				<%-- ④ --%>
 				<div>

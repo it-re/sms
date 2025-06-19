@@ -17,18 +17,22 @@
 	<c:param name="content">
 		<section>
 			<%-- 画面設計書の① --%>
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報削除</h2>
 
 			<%-- 画面設計書の②～④のフォーム --%>
-			<form action="SubjectUpdateExecute.action" method="get">
+			<form action="SubjectDeleteExecute.action" method="post">
 
 				<div>
 					<%-- 画面設計書② --%>
 					<p>
 						<label>
-							「${name}(${cd})」を削除してもよろしいですか
+							「${subject_name}(${subject_cd})」を削除してもよろしいですか
 						</label>
 					</p>
+
+					<input type="hidden" name="subject_cd" value="${subject_cd}">
+					<input type="hidden" name="subject_name" value="${subject_name}">
+
 
 					<%-- 画面設計書③ --%>
 					<button class="btn btn-danger" id="delete" name="delete" value="delete">削除</button>
@@ -40,9 +44,6 @@
 
 					<%-- 画面設計書④ --%>
 					<a href="subject_list.jsp">戻る</a>
-
-
-
 				</div>
 			</form>
 		</section>
