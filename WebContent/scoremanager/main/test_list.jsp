@@ -14,7 +14,7 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
 				<div class="row border mx-3 mb-3 py-2 ">
 					<form action="TestListSubjectExecute.action" method="get">
-						<div class="row align-items-center rounded pr-2 border-bottom " id="filter">
+						<div class="row align-items-center rounded pb-2 mb-3 border-bottom " id="filter">
 							<div class="col-2 text-center ">科目情報</div>
 							<div class="col-2">
 								<label class="form-label" for="f1">入学年度</label>
