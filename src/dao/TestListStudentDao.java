@@ -32,7 +32,6 @@ public class TestListStudentDao extends Dao {
 				// リザルトセットから学校番号を取得し
 				// SchoolDaoのgetメソッドでSchoolを取得
 				School school = schoolDao.get(rSet.getString("SCHOOL_CD"));
-				System.out.println(rSet.getString("NO") + school);
 				// SubjectDaoのgetメソッドの引数にリザルトセットの科目コードと先ほどのSchoolを指定
 				// これで科目名を取得する
 				String subjectName = subjectDao.get(rSet.getString("SUBJECT_CD"), school).getName();
