@@ -15,41 +15,25 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
+
 		<section>
 			<%-- 画面設計書の① --%>
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報削除</h2>
 
-			<%-- 画面設計書の②～⑦のフォーム --%>
-			<form action="SubjectUpdateExecute.action" method="get">
+			<%-- 画面設計書の②のフォーム --%>
+				<p class="text-center">
+				  <label class="form-control" style="background-color:#8cc3a9; padding: 5px 16px; display: inline-block; border-radius: 0;">
+				    削除が完了しました
+				  </label>
+				</p>
 
-				<div>
-					<%-- 画面設計書② --%>
-					<label for="cd">科目コード</label><br>
+			<br>
+			<br>
+			<br>
+			<br>
 
-					<%-- 画面設計書③ --%>
-					<input class="form-control" style="border: none;" type="text" id="cd"
-					 name="cd" value="${cd}" readonly />
-				</div>
-
-				<%-- 画面設計書④ --%>
-				<div>
-					<label for="name">科目名</label><br>
-
-					<%-- 画面設計書⑤ --%>
-					<input class="form-control" type="text" id="name" name="name"
-					 value="${name}" required maxlength="20"/>
-				</div>
-
-				<div class="mx-auto py-2">
-					<%-- 画面設計書⑥ --%>
-					<button class="btn btn-primary" id="change" name="change">変更</button>
-				</div>
-			</form>
-
-
-			<%-- 画面設計書⑦ --%>
-			<a href="subject_list.jsp">戻る</a>
-
+			<%-- 画面設計書③ --%>
+			<a href="subject_list.jsp">科目一覧</a>
 		</section>
 	</c:param>
 </c:import>
