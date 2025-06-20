@@ -15,7 +15,7 @@ import bean.Test;
 
 public class TestDao extends Dao {
 
-	public String baseSql = "select * from test where student_no = ?";
+	public String baseSql = "SELECT test.student_no, student.name, test.subject_cd, test.school_cd, test.no, test.point, test.class_num, student.ent_year FROM TEST join student on test.student_no = student.no where test.school_cd = ? ";
 
 	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 
@@ -128,7 +128,7 @@ public class TestDao extends Dao {
 		// リザルトセット
 		ResultSet rSet = null;
 		// SQL文の条件
-		String condition = "and ent_year = ? and class_num = ? and subject_cd = ?";
+		String condition = "and student.ent_year = ? and test.class_num = ? and test.subject_cd = ?";
 		// SQL文のソート
 		String order = " order by no asc";
 
