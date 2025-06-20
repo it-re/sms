@@ -77,9 +77,10 @@ public class TestListSubjectDao extends Dao {
 			statement = connection.prepareStatement
 							(baseSql + condition + order);
 			// プリペアードステートメントに値をバインド
-			statement.setInt(1, entYear);
-			statement.setString(2, classNum);
-			statement.setString(3,subject.getCd());
+			statement.setString(1,school.getCd());
+			statement.setInt(2, entYear);
+			statement.setString(3, classNum);
+			statement.setString(4,subject.getCd());
 
 			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
