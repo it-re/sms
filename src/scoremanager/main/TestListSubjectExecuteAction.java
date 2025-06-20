@@ -48,6 +48,11 @@ public class TestListSubjectExecuteAction extends Action {
 		entYear = Integer.parseInt(entYearStr);
 		subject = subjectDao.get(subjectStr, teacher.getSchool());
 
+		System.out.println(entYear);
+		System.out.println(classNum);
+		System.out.println(subject);
+		System.out.println(teacher.getSchool().getCd());
+
 		list=testListSubjectDao.filter(entYear,classNum,subject,teacher.getSchool());
 		// ビジネスロジック 4
 		if (entYearStr != null) {
@@ -83,7 +88,7 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("list", list);
 
 		// JSPへフォワード 7
-		req.getRequestDispatcher("test_list.jsp").forward(req, res);
+		req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
 
 
 	}
