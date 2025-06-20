@@ -16,7 +16,7 @@ import bean.TestListSubject;
 public class TestListSubjectDao extends Dao {
 
 	private String baseSql =
-		"SELECT test.student_no, test.student_name, test.subject_cd, test.school_cd, test.no, test.point, test.class_num, student.ent_year FROM TEST join student on test.student_no = student.no where test.school_cd = ? ";
+		"SELECT test.student_no, student.name, test.subject_cd, test.school_cd, test.no, test.point, test.class_num, student.ent_year FROM TEST join student on test.student_no = student.no where test.school_cd = ? ";
 
 	private List<TestListSubject> postFilter(ResultSet rSet
 	)throws Exception{
