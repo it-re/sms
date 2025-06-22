@@ -10,12 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
 import dao.ClassNumDao;
-import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
@@ -39,20 +37,14 @@ public class TestRegistAction extends Action {
 		LocalDate todaysDate = LocalDate.now(); // LocalDateインスタンスを取得
 		int year = todaysDate.getYear(); // 現在の年を取得
 		//String subject = "";
-		String studentNo = "";
-		String studentName = "";
 		List<Test> test = null;
 		Map<String ,String> errors = new HashMap<>();
 
 		//DAOを初期化
-		Student student = new Student();
-		StudentDao studentDao = new StudentDao();
 		SubjectDao subjectDao = new SubjectDao();
 		TestDao testDao = new TestDao();
 		ClassNumDao classNumDao = new ClassNumDao();
 
-
-		Subject subjectObj = subjectDao.get(subject, teacher.getSchool());
 
 
 		// 科目コードから 科目情報を取得
@@ -73,8 +65,6 @@ public class TestRegistAction extends Action {
 		classNum = req.getParameter("f2");
 		subject = req.getParameter("f3");
 		countStr= req.getParameter("f4");
-		studentNo = req.getParameter(student.getNo());
-		studentName = req.getParameter(student.getName());
 
 		//ビジネスロック
 		if(entYearStr != null){
@@ -84,6 +74,12 @@ public class TestRegistAction extends Action {
 			count = Integer.parseInt(countStr);
 		}
 
+		Subject subjectObj = null;
+		if (subject != null && !subject.equals("0") && !subject.isEmpty()) {
+			subjectObj = subjectDao.get(subject, teacher.getSchool());
+		}
+
+
 		//DBからデータを取得
 		//ログインユーザの学校コードをもとに科目番号の一覧を取得
 //		List<Test> list = testDao.filter(entYear, classNum, subjectObj, count, teacher.getSchool());
@@ -92,7 +88,8 @@ public class TestRegistAction extends Action {
 
 		/* debug */
 //		System.out.println("classNum:" + classNum);
-//		System.out.println("subject:" + subject);
+		System.out.println("subject:" + subject);
+		System.out.println("SubjectObj:" + subjectObj);
 
 		if(entYear == 0 && classNum == null && subject == null && count == 0){
 			//何もしない
@@ -123,6 +120,25 @@ public class TestRegistAction extends Action {
 //		}
 //
 //		System.out.println("debug:" + teacher.getSchool().getCd());
+		System.out.println("test:" + test);
+		System.out.println("count" + count);
+		//System.out.println("test.size(): " + (test != null ? test.size() : "null"));
+
+
+
+		req.setAttribute("f1", entYear);// 入学年度
+		req.setAttribute("f2", classNum);// クラス
+		req.setAttribute("f3", subject);// 科目コード
+		req.setAttribute("f4", count);// 回数
+
+
+
+		if (subjectObj != null) {
+			req.setAttribute("subject_name", subjectObj.getName());
+		}
+
+
+		req.setAttribute("test_no", count);
 
 		req.setAttribute("test",test);
 

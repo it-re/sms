@@ -30,7 +30,7 @@ public class TestDao extends Dao {
 		try{
 			//プリペアードステートメントにSQL分をセット
 			statement = connection.prepareStatement
-				("select * from test where student_no = ?, subject_cd = ?, school_cd = ?, no = ? ");
+				("select * from test where student_no = ? and subject_cd = ? and school_cd = ? and no = ? ");
 			//プリペアードステートメントに値をバインド
 			statement.setString(1, student.getNo());
 			statement.setString(2, subject.getCd());
@@ -128,7 +128,7 @@ public class TestDao extends Dao {
 		// リザルトセット
 		ResultSet rSet = null;
 		// SQL文の条件
-		String condition = "and student.ent_year = ? and test.class_num = ? and test.subject_cd = ?";
+		String condition = "and student.ent_year = ? and test.class_num = ? and test.subject_cd = ? and test.no = ?";
 		// SQL文のソート
 		String order = " order by no asc";
 
@@ -144,6 +144,8 @@ public class TestDao extends Dao {
 			statement.setString(3, classNum);
 			//科目をバインド
 			statement.setString(4,subject.getCd());
+			//回数をバインド
+			statement.setInt(5,num);
 
 			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
@@ -227,47 +229,43 @@ public class TestDao extends Dao {
 		}
 	}
 
-/**  これいるか？
-	private boolean save(Student student)throws Exception{
-		// コネクションを確立
-		Connection connection = getConnection();
+	public boolean save(Test test, Connection connection) throws Exception {
+
+		
 		// プリペアードステートメント
 		PreparedStatement statement = null;
-		// 実行件数
-		int count = 0;
+	    int count = 0;
 
-		StudentDao studentDao = new StudentDao();
+	    try {
+	        // 既存データの確認
+	        Test existing = get(test.getStudent(), test.getSubject(), test.getSchool(), test.getNo());
 
-		try{
-			//DBから学生を取得
-			Student old = studentDao.get(student.getNo());
-			if(old == null){
-				// 学生が存在しなかった場合
-				// プリペアードステートメントにINSERT文をセット
-				statement = connection.prepareStatement("insert into student(no, name, ent_year, class_num, is_attend, school_cd) values(?, ?, ?, ?, ?, ?)");
-				// プリペアードステートメントに値をバインド
-				statement.setString(1, student.getNo());
-				statement.setString(2, student.getName());
-				statement.setInt(3, student.getEntYear());
-				statement.setString(4, student.getClassNum());
-				statement.setBoolean(5, student.isAttend());
-				statement.setString(6, student.getSchool().getCd());
-			} else {
-				// 学生が存在した場合
-				// プリペアードステートメントにUPDATE文をセット
-				statement = connection.prepareStatement("update student set name = ?, ent_year = ?, class_num = ?, is_attend = ? where no = ?");
-				// プリペアードステートメントに値をバインド
-				statement.setString(1, student.getName());
-				statement.setInt(2, student.getEntYear());
-				statement.setString(3, student.getClassNum());
-				statement.setBoolean(4, student.isAttend());
-				statement.setString(5, student.getNo());
-			}
+	        if (existing == null) {
+	            // INSERT
+	            statement = connection.prepareStatement(
+	                "insert into test (student_no, subject_cd,school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)"
+	            );
+	            statement.setString(1, test.getStudent().getNo());
+	            statement.setString(2, test.getSubject().getCd());
+	            statement.setString(3, test.getSchool().getCd());
+	            statement.setInt(4, test.getNo());
+	            statement.setInt(5, test.getPoint());
+	            statement.setString(6, test.getClassNum());
+	        } else {
+	            // UPDATE
+	            statement = connection.prepareStatement(
+	                "UPDATE test SET point = ?, class_num = ? WHERE student_no = ? AND subject_cd = ? AND school_cd = ? AND no = ?"
+	            );
+	            statement.setInt(1, test.getPoint());
+	            statement.setString(2, test.getClassNum());
+	            statement.setString(3, test.getStudent().getNo());
+	            statement.setString(4, test.getSubject().getCd());
+	            statement.setString(5, test.getSchool().getCd());
+	            statement.setInt(6, test.getNo());
+	        }
 
-			// プリペアードステートメントを実行
-			count = statement.executeUpdate();
-
-		} catch (Exception e) {
+	        count = statement.executeUpdate();
+	    } catch (Exception e) {
 			throw e;
 		} finally {
 			// プリペアードステートメントを閉じる
@@ -296,7 +294,4 @@ public class TestDao extends Dao {
 			return false;
 		}
 	}
-**/
-
-
 }
