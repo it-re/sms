@@ -82,6 +82,7 @@
 					<table class="table table-hover">
 						<tr>
 							<th>入学年度</th>
+							<th>クラス</th>
 							<th>氏名</th>
 							<th>学生番号</th>
 							<th>点数</th>
@@ -89,6 +90,7 @@
 						<c:forEach var="test" items="${test}">
 							<tr>
 								<td>${test.student.entYear}</td>
+								<td>${test.student.class_num}</td>
 								<td>${test.student.name}</td>
 								<td>${test.student.no}</td>
 								<td>

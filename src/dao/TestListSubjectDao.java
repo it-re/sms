@@ -40,6 +40,10 @@ public class TestListSubjectDao extends Dao {
 				// subject_no と point をMapに追加
 				int subjectNo = rSet.getInt("no");
 				int point = rSet.getInt("point");
+
+				//putpointをbean
+
+
 				points.put(subjectNo, point);
 
 				// Mapをセット

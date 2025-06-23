@@ -15,6 +15,7 @@ private String classNum;
 
 private Map<Integer,Integer> points;
 
+
 public int getEntYear() {
 	return entYear;
 }
