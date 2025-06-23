@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,43 +21,57 @@ public class TestListSubjectDao extends Dao {
 	private List<TestListSubject> postFilter(ResultSet rSet
 	)throws Exception{
 
+		Map<String, TestListSubject> studentMap = new LinkedHashMap<>();
+
 		//リストを初期化
-		List<TestListSubject> list = new ArrayList<>();
+		//List<TestListSubject> list = new ArrayList<>();
 
 		try {
 			//リザルトセットを全件走査
 			while (rSet.next()){
-				//
-				TestListSubject testListSubject = new TestListSubject();
-				Map<Integer, Integer> points = new HashMap<>();
 
+				//*****
+				int testNo = rSet.getInt("no");
+				int point = rSet.getInt("point");
+				TestListSubject testListSubject = studentMap.get(rSet.getString("student_no"));
+				//TestListSubject testListSubject = new TestListSubject();
+				//Map<Integer, Integer> points = new HashMap<>();
+
+				if(testListSubject == null){
 				//listに検索結果をセット
-				testListSubject.setEntYear(rSet.getInt("ent_year"));
-				testListSubject.setStudentNo(rSet.getString("student_no"));
-				testListSubject.setStudentName(rSet.getString("name"));
-				testListSubject.setClassNum(rSet.getString("class_num"));
+					testListSubject = new TestListSubject();
+					testListSubject.setEntYear(rSet.getInt("ent_year"));
+					testListSubject.setStudentNo(rSet.getString("student_no"));
+					testListSubject.setStudentName(rSet.getString("name"));
+					testListSubject.setClassNum(rSet.getString("class_num"));
+					//追加
+					studentMap.put(rSet.getString("student_no"), testListSubject);
+				}
 
+				testListSubject.putPoint(testNo, point);
+
+				/*
 				// subject_no と point をMapに追加
 				int subjectNo = rSet.getInt("no");
 				int point = rSet.getInt("point");
-
-				//putpointをbean
-
 
 				points.put(subjectNo, point);
 
 				// Mapをセット
 				testListSubject.setPoints(points);
 
+				testListSubject.putPoint(getsubjectNo)
+
 				// リストに追加
 				list.add(testListSubject);
-
+				*/
 			}
 		}catch (SQLException | NullPointerException e){
 			e.printStackTrace();
 		}
 
-		return list;
+		//return list;
+		return new ArrayList<>(studentMap.values());
 
 	}
 
