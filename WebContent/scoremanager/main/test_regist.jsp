@@ -90,7 +90,7 @@
 						<c:forEach var="test" items="${test}">
 							<tr>
 								<td>${test.student.entYear}</td>
-								<td>${test.student.class_num}</td>
+								<td>${test.student.classNum}</td>
 								<td>${test.student.name}</td>
 								<td>${test.student.no}</td>
 								<td>
