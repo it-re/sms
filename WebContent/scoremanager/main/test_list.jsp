@@ -1,4 +1,4 @@
-<%-- 成績参照登録JSP --%>
+<%-- 成績参照検索JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -28,7 +28,8 @@
 							<select class="form-select" id="f1" name="f1">
 								<option value="0">--------</option>
 								<c:forEach var="year" items="${ent_year_set }">
-									<option value="${year }">${year }</option>
+									<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+									<option value="${year }" <c:if test="${year==f1 }">selected</c:if>>${year }</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -39,7 +40,8 @@
 							<select class="form-select" id="f2" name="f2">
 								<option value="0">--------</option>
 								<c:forEach var="num" items="${class_num_set }">
-									<option value="${num }">${num }</option>
+									<%-- 現在のnumと選択されていたf2が一致していた場合selectedを追記 --%>
+									<option value="${num }" <c:if test="${num==f2 }">selected</c:if>>${num }</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -50,7 +52,8 @@
 							<select class="form-select" id="f3" name="f3">
 								<option value="0">--------</option>
 								<c:forEach var="subject" items="${subjects}">
-									<option value="${subject.cd}">${subject.name}</option>
+									<%-- 現在のsubject.cdと選択されていたf3が一致していた場合selectedを追記 --%>
+									<option value="${subject.cd}" <c:if test="${subject.cd == f3 }">selected</c:if>>${subject.name}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -59,6 +62,8 @@
 							<button class="btn btn-secondary" id="filter-button">検索</button>
 						</div>
 
+						<%-- 科目別成績一覧エラー① --%>
+						<div class="mt-2 text-warning">${errors.get("1")}</div>
 					</div>
 				</form>
 
@@ -71,7 +76,7 @@
 								<%-- ⑪ --%>
 								<label class="form-label" for="f4">学生番号</label>
 								<%-- ⑫ --%>
-								<input class="form-control" type="text" id="f4" name="f4" placeholder="学生番号を入力してください" >
+								<input class="form-control" type="text" id="f4" name="f4" placeholder="学生番号を入力してください" required>
 							</div>
 							<%-- ⑬ --%>
 							<div class="col-2 text-center">
