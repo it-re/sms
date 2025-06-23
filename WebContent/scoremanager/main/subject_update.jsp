@@ -43,6 +43,7 @@
 					 value="${name}" required maxlength="20"/>
 				</div>
 
+
 				<div class="mx-auto py-2">
 					<%-- 画面設計書⑥ --%>
 					<button class="btn btn-primary" id="change" name="change">変更</button>
