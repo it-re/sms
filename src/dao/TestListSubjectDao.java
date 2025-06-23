@@ -34,11 +34,11 @@ public class TestListSubjectDao extends Dao {
 				//listに検索結果をセット
 				testListSubject.setEntYear(rSet.getInt("ent_year"));
 				testListSubject.setStudentNo(rSet.getString("student_no"));
-				testListSubject.setStudentName(rSet.getString("student_name"));
+				testListSubject.setStudentName(rSet.getString("name"));
 				testListSubject.setClassNum(rSet.getString("class_num"));
 
 				// subject_no と point をMapに追加
-				int subjectNo = rSet.getInt("subject_no");
+				int subjectNo = rSet.getInt("no");
 				int point = rSet.getInt("point");
 				points.put(subjectNo, point);
 
