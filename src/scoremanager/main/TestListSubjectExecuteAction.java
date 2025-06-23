@@ -2,7 +2,9 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,8 @@ public class TestListSubjectExecuteAction extends Action {
 		List<TestListSubject> list = new ArrayList<>();
 		int entYear = 0; // 入学年度
 		Subject subject = new Subject();
+		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
+
 
 		LocalDate todaysDate = LocalDate.now(); // LocalDateインスタンスを取得
 		int year = todaysDate.getYear(); // 現在の年を取得
@@ -53,7 +57,19 @@ public class TestListSubjectExecuteAction extends Action {
 		System.out.println(subject);
 		System.out.println(teacher.getSchool().getCd());
 
-		list=testListSubjectDao.filter(entYear,classNum,subject,teacher.getSchool());
+		req.setAttribute("f1", entYear);
+		req.setAttribute("f2", classNum);
+		req.setAttribute("f3", subjectStr);
+
+		if(!entYearStr.equals("0") && !classNum.equals("0") && !subjectStr.equals("0")) {
+			list=testListSubjectDao.filter(entYear,classNum,subject,teacher.getSchool());
+		} else {
+			errors.put("1", "入学年度とクラスと科目を選択してください");
+			req.setAttribute("errors", errors);
+			req.getRequestDispatcher("TestList.action").forward(req, res);
+
+		}
+
 		// ビジネスロジック 4
 		if (entYearStr != null) {
 			// 数値に変換
@@ -73,12 +89,6 @@ public class TestListSubjectExecuteAction extends Action {
 		// ログインユーザーの学校コードをもとに科目名を取得
 		List<Subject> subjects = subjectDao.filter(teacher.getSchool());
 
-		// レスポンス値をセット 6
-		// リクエストに入力されたデータをセット
-		req.setAttribute("f1", entYear);
-		req.setAttribute("f2", classNum);
-		req.setAttribute("f3", subjectStr);
-
 
 		// リクエストにデータをセット
 		req.setAttribute("class_num_set", class_num_set);
@@ -87,7 +97,11 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("subject", subject);
 		req.setAttribute("list", list);
 
+		System.out.println(list.get(0).getPoints().get(1));
+		System.out.println(list.get(0).getPoints().get(2));
+
 		// JSPへフォワード 7
+
 		req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
 
 

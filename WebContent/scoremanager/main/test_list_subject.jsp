@@ -84,12 +84,12 @@
 						</tr>
 						<c:forEach var="testListSubject" items="${list }">
 							<tr>
-								<td>${testlistsubject.entYear }</td>
-								<td>${testlistsubject.classNum }</td>
-								<td>${testlistsubject.studentNo }</td>
-								<td>${testlistsubject.studentName }</td>
-								<td>${testlistsubject.points.1 }</td>
-								<td>${testlistsubject.points.2}</td>
+								<td>${testListSubject.entYear }</td>
+								<td>${testListSubject.classNum }</td>
+								<td>${testListSubject.studentNo }</td>
+								<td>${testListSubject.studentName }</td>
+								<td><c:out value="${testListSubject.points[1]}" /></td>
+								<td><c:out value="${testListSubject.points[2]}" /></td>
 
 
 							</tr>
