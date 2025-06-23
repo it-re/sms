@@ -15,7 +15,7 @@
 
 			<form action="TestRegist.action" method="get">
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
-					<div class="col-4">
+					<div class="col-md-2">
 						<label class="form-label" for="student-f1-select">入学年度</label>
 						<select class="form-select" id="student-f1-select" name="f1">
 							<option value="0">--------</option>
@@ -25,7 +25,7 @@
 							</c:forEach>
 						</select>
 					</div>
-					<div class="col-4">
+					<div class="col-md-2">
 						<label class="form-label" for="student-f2-select">クラス</label>
 						<select class="form-select" id="student-f2-select" name="f2">
 							<option value="0">--------</option>
@@ -36,57 +36,61 @@
 						</select>
 					</div>
 
-					<div class="col-4">
+					<div class="col-md-4">
 						<label class="form-label" for="student-f3-select">科目</label>
 						<select class="form-select" id="student-f3-select" name="f3">
 							<option value="0">--------</option>
 							<c:forEach var="subject" items="${subject_cd_set}">
 								<%-- 現在のsubjectと選択されていたf3が一致していた場合selectedを追記 --%>
-								<option value="${subject}" <c:if test="${subject==f3}">selected</c:if>>${subject}</option>
+								<option value="${subject.cd}" <c:if test="${subject.cd ==f3}">selected</c:if>>${subject.name}</option>
 							</c:forEach>
 						</select>
 					</div>
 
-					<div class="col-4">
-						<label class="form-label" for="student-f4-select">回数</label>
+					<div class="col-md-2">
+
+						<label class="form-label">回数</label>
 						<select class="form-select" id="student-f4-select" name="f4">
 							<option value="0">--------</option>
-							<c:forEach var="count" items="${count_set}">
-								<%-- 現在のsubjectと選択されていたf3が一致していた場合selectedを追記 --%>
-								<option value="${count}" <c:if test="${count==f4}">selected</c:if>>${count}</option>
-							</c:forEach>
+							<option value="1" <c:if test="${1==f4}">selected</c:if>>1</option>
+							<option value="2" <c:if test="${2==f4}">selected</c:if>>2</option>
 						</select>
+
 					</div>
 
 
 
 
-
-
-					<div class="col-2 text-center">
+					<div class="col-md-2 text-center">
 						<button class="btn btn-secondary" id="filter-button">検索</button>
 					</div>
 					<div class="mt-2 text-warning">${errors.get("f1") }</div>
 				</div>
 			</form>
 
+			<form action="TestRegistExecute.action" method="get">
+
+			<!-- 必要なパラメータを hidden で渡す -->
+			<input type="hidden" name="f1" value="${f1}" />
+			<input type="hidden" name="f2" value="${f2}" />
+			<input type="hidden" name="f3" value="${f3}" />
+			<input type="hidden" name="f4" value="${f4}" />
 
 			<c:choose>
 				<c:when test="${test.size()>0 }">
-					<div>科目：${test}(${count})</div>
+					<div>科目：${subject_name }(${test_no}回)</div>
 					<table class="table table-hover">
 						<tr>
 							<th>入学年度</th>
 							<th>氏名</th>
-							<th>学生番号氏名</th>
+							<th>学生番号</th>
 							<th>点数</th>
 						</tr>
-						<c:forEach var="testRecord" items="${subject}">
+						<c:forEach var="test" items="${test}">
 							<tr>
-								<td>${subject.year}</td>
-								<td>${subject.class_num}</td>
-								<td>${subject.student_no}</td>
-								<td>${subject.student_name}</td>
+								<td>${test.student.entYear}</td>
+								<td>${test.student.name}</td>
+								<td>${test.student.no}</td>
 								<td>
 								<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" value="${test.point}">
 								</td>
@@ -96,12 +100,12 @@
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary" id="filter-button">登録して終了</button>
 					</div>
-
 				</c:when>
 				<c:otherwise>
 					<div class="mt-2 text-warning">${errors.get("e1") }></div>
 				</c:otherwise>
 			</c:choose>
+			</form>
 		</section>
 	</c:param>
 </c:import>
