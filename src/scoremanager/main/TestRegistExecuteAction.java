@@ -96,7 +96,7 @@ public class TestRegistExecuteAction extends Action {
 		             }
 
 		             if (!valid) {
-		                 errors.put(student.getNo(), "0～100の範囲で入力してください");
+		                 errors.put("e1", "0～100の範囲で入力してください");
 		                 continue; // エラーがある場合は保存しない
 		             }
 
