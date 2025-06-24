@@ -52,10 +52,10 @@ public class TestListSubjectExecuteAction extends Action {
 		entYear = Integer.parseInt(entYearStr);
 		subject = subjectDao.get(subjectStr, teacher.getSchool());
 
-		System.out.println(entYear);
-		System.out.println(classNum);
-		System.out.println(subject);
-		System.out.println(teacher.getSchool().getCd());
+//		System.out.println(entYear);
+//		System.out.println(classNum);
+//		System.out.println(subject);
+//		System.out.println(teacher.getSchool().getCd());
 
 		req.setAttribute("f1", entYear);
 		req.setAttribute("f2", classNum);
@@ -97,8 +97,7 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("subject", subject);
 		req.setAttribute("list", list);
 
-		System.out.println(list.get(0).getPoints().get(1));
-		System.out.println(list.get(0).getPoints().get(2));
+//		System.out.println(list.get(0).getPoints());
 
 		// JSPへフォワード 7
 

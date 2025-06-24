@@ -1,6 +1,7 @@
 package bean;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TestListSubject implements Serializable {
@@ -56,5 +57,15 @@ public void setPoints(Map<Integer, Integer> points) {
 	this.points = points;
 	}
 
+public int getPoint(int key){
+	return points.get(key);
 
+}
+
+public void putPoint(int key,int value){
+	if(points==null){
+		this.points = new HashMap<>();
+	}
+	this.points.put(key, value);
+}
 }
