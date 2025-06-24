@@ -26,7 +26,7 @@
 					<%-- 画面設計書② --%>
 					<p>
 						<label>
-							「${subject_name}(${subject_cd})」を削除してもよろしいですか
+							「${subject.name}(${subject.cd})」を削除してもよろしいですか
 						</label>
 					</p>
 
