@@ -1,7 +1,6 @@
 package scoremanager.main;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
-import dao.ClassNumDao;
 import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestDao;
@@ -39,16 +37,11 @@ public class TestRegistExecuteAction extends Action {
 		Subject subject = null;
 		String countStr = "";
 		int count = 0;
-		//String pointStr = "";
-		//int point = 0;
-		//Student student = new Student();
-		List<Test> testList = new ArrayList<>();
-		Map<String ,String> errors = new HashMap<>();
+		Map<String ,String> mis = new HashMap<>();
 
 		//DAOを初期化
 		SubjectDao subjectDao = new SubjectDao();
 		TestDao testDao = new TestDao();
-		ClassNumDao classNumDao = new ClassNumDao();
 		StudentDao studentDao = new StudentDao();
 
 		//リクエストパラメーターの取得
@@ -96,41 +89,38 @@ public class TestRegistExecuteAction extends Action {
 		             }
 
 		             if (!valid) {
-		                 errors.put("e1", "0～100の範囲で入力してください");
+		                 mis.put(student.getNo(), "0～100の範囲で入力してください");
 		                 continue; // エラーがある場合は保存しない
-		             }
+		             }else{
+		            	 Test test = new Test();
+			             test.setStudent(student);
+			             test.setSubject(subject);
+			             test.setSchool(teacher.getSchool());
+			             test.setClassNum(classNum);
+			             test.setNo(count);
+			             test.setPoint(point);
 
-		             Test test = new Test();
-		             test.setStudent(student);
-		             test.setSubject(subject);
-		             test.setSchool(teacher.getSchool());
-		             test.setClassNum(classNum);
-		             test.setNo(count);
-		             test.setPoint(point);
+			             boolean saved = testDao.save(test, connection);
 
-		             boolean saved = testDao.save(test, connection);
+			           //デバック
+			 			System.out.println("point: " + point);
+			 			System.out.println("保存成功？: " + saved);
 
-		           //デバック
-		 			System.out.println("point: " + point);
-		 			System.out.println("保存成功？: " + saved);
-		 			System.out.println("errors: " + errors);
-
-
-		             if (!saved) {
-		                 errors.put(student.getNo(), "保存に失敗しました");
 		             }
 		         }
 		     }
 
 
-		     if (errors.isEmpty()) {
-		         //connection.commit();
+		     if (mis.isEmpty()) {
 		         req.getRequestDispatcher("test_regist_done.jsp"
 		        		).forward(req, res);
 		     } else {
-		         //connection.rollback();
-		         req.setAttribute("errors", errors);
-		         req.getRequestDispatcher("test_regist.jsp")
+		         req.setAttribute("mis", mis);
+		         req.setAttribute("f1", entYearStr);
+		         req.setAttribute("f2", classNum);
+		         req.setAttribute("f3", subjectStr);
+		         req.setAttribute("f4", countStr);
+		         req.getRequestDispatcher("TestRegist.action")
 		         	.forward(req, res);
 		     }
 

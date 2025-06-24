@@ -95,7 +95,11 @@
 								<td>${test.student.no}</td>
 								<td>
 								<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" value="${test.point}">
+								<c:if test="${mis[test.student.no] != null}">
+									<div class="text-warning">${mis[test.student.no]}</div>
+								</c:if>
 								</td>
+
 							</tr>
 						</c:forEach>
 					</table>
@@ -104,7 +108,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="mt-2 text-warning">${errors.get("e1") }></div>
+					<div class="mt-2 text-warning">${errors.get("e1") }</div>
 				</c:otherwise>
 			</c:choose>
 			</form>
