@@ -215,9 +215,10 @@ public class SubjectDao extends Dao {
 		// 学校Daoを宣言
 		SchoolDao schoolDao = new SchoolDao();
 
+
 		try {
 			// データベースから科目を取得
-			Subject old = get(subject.getCd(), schoolDao.get(subject.getCd()));
+			Subject old = get(subject.getCd(), subject.getSchool());
 
 			if (old != null) {
 				// 科目が存在した場合、科目を消す
