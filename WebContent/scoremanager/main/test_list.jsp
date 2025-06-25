@@ -16,7 +16,7 @@
 
 
 			<div class="row border mx-3 mb-3 py-2 rounded">
-				<%-- ⑮ --%>
+
 				<form action="TestListSubjectExecute.action" method="get">
 					<div class="row align-items-center  pb-2 mb-3 border-bottom " id="filter">
 						<%-- ② --%>
@@ -57,6 +57,10 @@
 								</c:forEach>
 							</select>
 						</div>
+
+						<%-- ⑮ --%>
+						<input type="hidden" name="f" value="st">
+
 						<%-- ⑨ --%>
 						<div class="col-2 mt-3 text-center">
 							<button class="btn btn-secondary" id="filter-button">検索</button>
@@ -76,8 +80,12 @@
 								<%-- ⑪ --%>
 								<label class="form-label" for="f4">学生番号</label>
 								<%-- ⑫ --%>
-								<input class="form-control" type="text" id="f4" name="f4" placeholder="学生番号を入力してください" required>
+								<input class="form-control" type="text" id="f4" name="f4" placeholder="学生番号を入力してください" maxlength="20" value="${f4}" required>
 							</div>
+
+							<%-- ⑮ --%>
+							<input type="hidden" name="f" value="sj">
+
 							<%-- ⑬ --%>
 							<div class="col-2 text-center">
 								<button class="btn btn-secondary" id="filter-button">検索</button>
