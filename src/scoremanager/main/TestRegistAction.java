@@ -66,6 +66,7 @@ public class TestRegistAction extends Action {
 		subject = req.getParameter("f3");
 		countStr= req.getParameter("f4");
 
+
 		//ビジネスロック
 		if(entYearStr != null){
 			entYear = Integer.parseInt(entYearStr);
@@ -108,6 +109,7 @@ public class TestRegistAction extends Action {
 		}
 
 
+
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set",list);
 		req.setAttribute("subject_cd_set", subjectList);
@@ -122,9 +124,6 @@ public class TestRegistAction extends Action {
 //		System.out.println("debug:" + teacher.getSchool().getCd());
 		System.out.println("test:" + test);
 		System.out.println("count" + count);
-		//System.out.println("test.size(): " + (test != null ? test.size() : "null"));
-
-
 
 		req.setAttribute("f1", entYear);// 入学年度
 		req.setAttribute("f2", classNum);// クラス
@@ -141,6 +140,10 @@ public class TestRegistAction extends Action {
 		req.setAttribute("test_no", count);
 
 		req.setAttribute("test",test);
+
+
+		@SuppressWarnings("unchecked")
+		Map<String, String> mis = (Map<String, String>) req.getAttribute("mis");
 
 		// JSPへフォワード 7
 		req.getRequestDispatcher("test_regist.jsp").forward(req, res);

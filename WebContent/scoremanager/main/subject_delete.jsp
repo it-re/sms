@@ -43,7 +43,7 @@
 					<br>
 
 					<%-- 画面設計書④ --%>
-					<a href="subject_list.jsp">戻る</a>
+					<a href="SubjectList.action">戻る</a>
 				</div>
 			</form>
 		</section>

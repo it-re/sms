@@ -144,8 +144,6 @@ public class SubjectDao extends Dao {
 		// 実行件数
 		int count = 0;
 
-		// 学校Daoを宣言
-		SchoolDao schoolDao = new SchoolDao();
 		try {
 			// データベースから科目を取得
 			Subject old = get(subject.getCd(), subject.getSchool());
@@ -212,10 +210,6 @@ public class SubjectDao extends Dao {
 		// 実行件数
 		int count = 0;
 
-		// 学校Daoを宣言
-		SchoolDao schoolDao = new SchoolDao();
-
-
 		try {
 			// データベースから科目を取得
 			Subject old = get(subject.getCd(), subject.getSchool());
@@ -227,7 +221,11 @@ public class SubjectDao extends Dao {
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getSchool().getCd());
 				statement.setString(2, subject.getCd());
+
+				count = statement.executeUpdate();
 			}
+
+
 		} catch (Exception e) {
 			throw e;
 		} finally {

@@ -33,7 +33,7 @@
 			<br>
 
 			<%-- 画面設計書③ --%>
-			<a href="subject_list.jsp">科目一覧</a>
+			<a href="SubjectList.action">科目一覧</a>
 		</section>
 	</c:param>
 </c:import>
