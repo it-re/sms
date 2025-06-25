@@ -47,34 +47,18 @@ public class TestListSubjectDao extends Dao {
 					//追加
 					studentMap.put(rSet.getString("student_no"), testListSubject);
 
-					testListSubject.putPoint(testNo, point);
 
-					for (TestListSubject subject : studentMap.values()) {
-						for (int i = 1; i <= 2; i++) {
-							if (!subject.getPoints().containsKey(i)) {
-							subject.putPoint(i, -1); // ダミーデータとして -1 を追加
-							}
-						}
+
+				}
+				testListSubject.putPoint(testNo, point);
+			}
+			for (TestListSubject subject : studentMap.values()) {
+				for (int i = 1; i <= 2; i++) {
+					if (!subject.getPoints().containsKey(i)) {
+						subject.putPoint(i, -1); // ダミーデータとして -1 を追加
 					}
-
-				/*
-				// subject_no と point をMapに追加
-				int subjectNo = rSet.getInt("no");
-				int point = rSet.getInt("point");
-
-				points.put(subjectNo, point);
-
-				// Mapをセット
-				testListSubject.setPoints(points);
-
-				testListSubject.putPoint(getsubjectNo)
-
-				// リストに追加
-				list.add(testListSubject);
-				*/
 				}
 			}
-
 
 
 		}catch (SQLException | NullPointerException e){
