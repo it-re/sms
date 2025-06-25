@@ -30,8 +30,8 @@
 						</label>
 					</p>
 
-					<input type="hidden" name="subject_cd" value="${subject_cd}">
-					<input type="hidden" name="subject_name" value="${subject_name}">
+					<input type="hidden" name="subject_cd" value="${subject.cd}">
+					<input type="hidden" name="subject_name" value="${subject.name}">
 
 
 					<%-- 画面設計書③ --%>
