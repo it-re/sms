@@ -94,7 +94,17 @@
 								<td>${test.student.name}</td>
 								<td>${test.student.no}</td>
 								<td>
-								<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" <c:if test="test.no != 0">value="${test.point}"</c:if>value="">
+								<c:choose>
+									<c:when test="${test.no != 0}">
+										<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" value="${test.point}">
+									</c:when>
+									<c:otherwise>
+										<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" value="">
+									</c:otherwise>
+								</c:choose>
+
+								<%--
+								<input type="text" id="point_${test.student.no}" name="point_${test.student.no}" <c:if test="test.no != 0">value="${test.point}"</c:if>value="">--%>
 								<c:if test="${mis[test.student.no] != null}">
 									<div class="text-warning">${mis[test.student.no]}</div>
 								</c:if>

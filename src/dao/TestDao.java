@@ -276,14 +276,17 @@ public class TestDao extends Dao {
 					throw sqle;
 				}
 			}
+			/*
 			// コネクションを閉じる
 			if (connection != null) {
 				try {
 					connection.close();
+
 				} catch (SQLException sqle) {
 					throw sqle;
 				}
 			}
+			*/
 		}
 
 		if (count > 0) {
