@@ -15,7 +15,7 @@ import bean.Test;
 
 public class TestDao extends Dao {
 
-	public String baseSql = "SELECT test.student_no, student.name, test.subject_cd, test.school_cd, test.no, test.point, test.class_num, student.ent_year FROM TEST join student on test.student_no = student.no where test.school_cd = ? ";
+	public String baseSql = "SELECT student.no as student_no, student.name, test.subject_cd, student.school_cd, test.no, test.point, student.class_num, student.ent_year FROM student left join (select * from test where subject_cd = ? and no = ?) as test on student.no = test.student_no";
 
 	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 
@@ -128,24 +128,24 @@ public class TestDao extends Dao {
 		// リザルトセット
 		ResultSet rSet = null;
 		// SQL文の条件
-		String condition = "and student.ent_year = ? and test.class_num = ? and test.subject_cd = ? and test.no = ?";
+		String condition = " where student.ent_year = ? and student.class_num = ? and student.school_cd = ?";
 		// SQL文のソート
-		String order = " order by no asc";
+		String order = " order by student.no asc";
 
 		try{
 			// プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement
 					(baseSql + condition + order);
 			// プリペアードステートメントに学校コードをバインド
-			statement.setString(1, school.getCd());
+			statement.setString(1, subject.getCd());
 			// プリペアードステートメントに入学年度をバインド
-			statement.setInt(2, entYear);
+			statement.setInt(2, num);
 			// プリペアードステートメントにクラス番号をバインド
-			statement.setString(3, classNum);
+			statement.setInt(3, entYear);
 			//科目をバインド
-			statement.setString(4,subject.getCd());
+			statement.setString(4,classNum);
 			//回数をバインド
-			statement.setInt(5,num);
+			statement.setString(5,school.getCd());
 
 			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
@@ -231,7 +231,7 @@ public class TestDao extends Dao {
 
 	public boolean save(Test test, Connection connection) throws Exception {
 
-		
+
 		// プリペアードステートメント
 		PreparedStatement statement = null;
 	    int count = 0;
