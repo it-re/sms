@@ -62,7 +62,7 @@ public class TestRegistExecuteAction extends Action {
 
 		// 生徒一覧を取得
 		 List<Student> studentList = studentDao.filter(teacher.getSchool(), entYear, classNum, true);
-
+		 studentList.addAll(studentDao.filter(teacher.getSchool(), entYear, classNum, false));
 
 
 
