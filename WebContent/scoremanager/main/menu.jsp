@@ -38,6 +38,7 @@
 					style="height: 10rem; background-color: #ddb;">
 					<a href="ClassList.action">クラス管理</a>
 				</div>
+
 			</div>
 		</section>
 	</c:param>
