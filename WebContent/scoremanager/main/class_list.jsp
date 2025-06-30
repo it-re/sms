@@ -28,8 +28,8 @@
 
 					<c:forEach var="item" items="${classlist}">
 						<tr>
-							<td>${item}</td><%-- 途中 --%>
-							<td><a href="ClassUpdate.action?cd=${class_num.cd}">変更</a></td>
+							<td>${item}</td>
+							<td><a href="ClassUpdate.action?cd=${item}">変更</a></td>
 							</tr>
 					</c:forEach>
 				</table>
