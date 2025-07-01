@@ -320,8 +320,6 @@ public class TestDao extends Dao {
 				statement.setString(2, test.getSubject().getCd());
 				statement.setString(3, test.getSchool().getCd());
 				statement.setInt(4, test.getNo());
-				// プリペアードステートメントを実行
-				ResultSet resultSet = statement.executeQuery();
 
 				count = statement.executeUpdate();
 			}
