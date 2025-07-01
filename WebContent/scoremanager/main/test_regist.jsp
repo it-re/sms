@@ -109,6 +109,7 @@
 									<div class="text-warning">${mis[test.student.no]}</div>
 								</c:if>
 								</td>
+								<td><a href="TestDelete.action?student_no=${test.student.no}&f1=${test.student.entYear}&f2=${test.student.classNum}&f3=${subject}&f4=${test_no}">削除</a></td>
 
 							</tr>
 						</c:forEach>
