@@ -37,24 +37,24 @@ public class ClassUpdateExecuteAction extends Action {
 
 		try {
 			Integer.parseInt(newclassnum);
+			if (classnumDao.get(class_num, teacher.getSchool())== null) { // クラスが重複している場合
+				errors.put("1", "クラスが存在していません");
+				// リクエストにエラーメッセージをセット
+				req.setAttribute("errors", errors);
+			} else if(classnumDao.get(newclassnum, teacher.getSchool())!= null){
+				errors.put("1", "クラス番号が重複しています");
+				req.setAttribute("errors", errors);
+			} else {
+				// subjectに科目情報をセット
+				classnum.setClass_num(class_num);
+				classnum.setSchool(teacher.getSchool());
+
+				// saveメソッドで情報を登録
+				classnumDao.save(classnum, newclassnum);
+			}
 		} catch(Exception e) {
-
-		}
-
-		if (classnumDao.get(class_num, teacher.getSchool())== null) { // クラスが重複している場合
-			errors.put("1", "クラスが存在していません");
-			// リクエストにエラーメッセージをセット
+			errors.put("1", "クラス番号は数値で入力してください");
 			req.setAttribute("errors", errors);
-		} else if(classnumDao.get(newclassnum, teacher.getSchool())!= null){
-			errors.put("1", "クラス番号が重複しています");
-			req.setAttribute("errors", errors);
-		} else {
-			// subjectに科目情報をセット
-			classnum.setClass_num(class_num);
-			classnum.setSchool(teacher.getSchool());
-
-			// saveメソッドで情報を登録
-			classnumDao.save(classnum, newclassnum);
 		}
 
 		//リクエストに値をセット
