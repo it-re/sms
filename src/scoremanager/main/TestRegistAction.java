@@ -141,6 +141,8 @@ public class TestRegistAction extends Action {
 
 		req.setAttribute("test",test);
 
+		req.setAttribute("subject", subject);
+
 
 		@SuppressWarnings("unchecked")
 		Map<String, String> mis = (Map<String, String>) req.getAttribute("mis");
