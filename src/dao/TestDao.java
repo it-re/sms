@@ -297,4 +297,63 @@ public class TestDao extends Dao {
 			return false;
 		}
 	}
+
+	public boolean delete(Test test) throws Exception {
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+
+		try {
+			// データベースから科目を取得
+			Test old = get(test.getStudent(), test.getSubject(), test.getSchool(), test.getNo());
+
+			if (old != null) {
+				// テスト情報が存在した場合、科目を消す
+				// プリペアードステートメントにDELETE文をセット
+				statement = connection.prepareStatement("DELETE FROM TEST WHERE STUDENT_NO = ? AND SUBJECT_CD = ? AND SCHOOL_CD = ? AND NO = ? ");
+				//プリペアードステートメントに値をバインド
+				statement.setString(1, test.getStudent().getNo());
+				statement.setString(2, test.getSubject().getCd());
+				statement.setString(3, test.getSchool().getCd());
+				statement.setInt(4, test.getNo());
+				// プリペアードステートメントを実行
+				ResultSet resultSet = statement.executeQuery();
+
+				count = statement.executeUpdate();
+			}
+
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		if (count > 0) {
+			// 実行件数が1件以上ある場合
+			return true;
+		} else {
+			// 実行件数が0件の場合
+			return false;
+		}
+	}
 }
