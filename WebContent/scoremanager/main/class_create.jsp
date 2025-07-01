@@ -25,6 +25,9 @@
                 <c:if test="${not empty errors['2']}">
                     <div class="mt-2 text-danger">${errors['2']}</div>
                 </c:if>
+               <c:if test="${not empty errors['3']}">
+                    <div class="mt-2 text-danger">${errors['3']}</div>
+                </c:if>
 
                 <div>
                     <label for="class_num">クラス</label><br>

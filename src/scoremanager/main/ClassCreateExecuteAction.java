@@ -38,6 +38,16 @@ public class ClassCreateExecuteAction extends Action {
             errors.put("2", "クラス番号が重複しています。");
         }
 
+        // バリデーション（3）数字のみ
+		try {
+			Integer.parseInt(class_numStr);
+
+		} catch(Exception e) {
+			errors.put("3", "クラス番号は数値で入力してください");
+			req.setAttribute("errors", errors);
+		}
+
+
         // エラーがある場合は入力画面に戻る
         if (!errors.isEmpty()) {
             req.setAttribute("errors", errors);
