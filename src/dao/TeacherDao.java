@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import bean.School;
 import bean.Teacher;
 
 public class TeacherDao extends Dao {
@@ -90,5 +93,67 @@ public class TeacherDao extends Dao {
 			return null;
 		}
 		return teacher;
+	}
+
+
+	// filterメソッド 学校から在職教師一覧を取得
+	// 引数1 school - 教師を検索したい学校を指定 想定はログイン中のユーザーの学校
+	public List<Teacher> filter(School school) throws Exception {
+		// データベースへのコネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		// リストを宣言
+		List<Teacher> list = new ArrayList<>();
+
+		try {
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement("SELECT * FROM TEACHER WHERE SCHOOL_CD = ?");
+			// プリペアードステートメントに学校コードをバインド
+			statement.setString(1, school.getCd());
+			// プリペアードステートメントを実行
+			ResultSet resultSet = statement.executeQuery();
+
+			// 学校Daoを宣言
+			SchoolDao schoolDao = new SchoolDao();
+
+			// リザルトセットを全件走査
+			while (resultSet.next()) {
+				// 科目Beanを宣言
+				Teacher teacher = new Teacher();
+
+				// 科目Beanに検索結果をセット
+				teacher.setId(resultSet.getString("ID"));
+				teacher.setName(resultSet.getString("NAME"));
+				teacher.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
+
+
+				//listに追加
+				list.add(teacher);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
 	}
 }
