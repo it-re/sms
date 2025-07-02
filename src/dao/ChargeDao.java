@@ -16,8 +16,8 @@ public class ChargeDao extends Dao {
 
 	// get - 科目から担当教師情報を取得(1つの科目に対応する教師は1人のみ) 科目名と教師名も取得する
 	// 引数1 subject - 情報を取得したい科目を指定
-	// 引数2 teacher - 検索したい学校に所属する教師 直接呼び出す際はログイン中のユーザーを指定
-	public Charge get(Subject subject, Teacher teacher) throws Exception {
+	// 引数2 school - 検索したい学校 Action等から直接呼び出す際はログイン中のユーザーのものを指定
+	public Charge get(Subject subject, School school) throws Exception {
 
 		// データベースへのコネクションを確立
 		Connection connection = getConnection();
@@ -44,7 +44,7 @@ public class ChargeDao extends Dao {
 				// リザルトセットが存在する場合
 				// 担当Beanに検索結果をセット
 				charge.setTeacher(teacherDao.get(resultSet.getString("TEACHER_ID")));
-				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), teacher.getSchool()));
+				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), school, true));
 			} else {
 				// リザルトセットが存在しない場合nullをセット
 				charge = null;
@@ -91,7 +91,7 @@ public class ChargeDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT CD, TEACHER_ID, SUBJECT_CD FROM SCHOOL LEFT JOIN CHARGE WHERE CD = 'oom';");
+			statement = connection.prepareStatement("SELECT CD, TEACHER_ID, SUBJECT_CD FROM SCHOOL LEFT JOIN CHARGE WHERE CD = ?;");
 			// 科目コードをバインド
 			statement.setString(1, school.getCd());
 
@@ -102,7 +102,7 @@ public class ChargeDao extends Dao {
 				Charge charge = new Charge();
 
 				charge.setTeacher(teacherDao.get(resultSet.getString("TEACHER_ID")));
-				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), school));
+				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), school, true));
 
 				list.add(charge);
 			}
@@ -160,7 +160,7 @@ public class ChargeDao extends Dao {
 				Charge charge = new Charge();
 
 				charge.setTeacher(teacherDao.get(resultSet.getString("TEACHER_ID")));
-				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), teacher.getSchool()));
+				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), teacher.getSchool(), true));
 
 				list.add(charge);
 			}
@@ -204,7 +204,7 @@ public class ChargeDao extends Dao {
 
 		try {
 			// データベースから科目を取得
-			Charge old = get(subject, teacher);
+			Charge old = get(subject, teacher.getSchool());
 
 			if (old == null) {
 				// データが存在しなかった場合、データを新規作成
@@ -270,7 +270,7 @@ public class ChargeDao extends Dao {
 
 		try {
 			// データベースから担当教師情報を取得
-			Charge old = get(subject, teacher);
+			Charge old = get(subject, teacher.getSchool());
 
 			if (old != null) {
 				// データが存在した場合、データを削除

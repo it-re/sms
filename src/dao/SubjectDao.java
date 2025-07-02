@@ -36,7 +36,71 @@ public class SubjectDao extends Dao {
 			// プリペアードステートメントを実行
 			ResultSet resultSet = statement.executeQuery();
 
-			// 学校Daoを宣言
+			// Daoを宣言
+			SchoolDao schoolDao = new SchoolDao();
+			ChargeDao chargeDao = new ChargeDao();
+
+			if (resultSet.next()) {
+				// リザルトセットが存在する場合
+				// 科目Beanに検索結果をセット
+				subject.setCd(resultSet.getString("CD"));
+				subject.setName(resultSet.getString("NAME"));
+				subject.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
+
+				if (chargeDao.get(subject, school) != null) {
+				subject.setTeacher(chargeDao.get(subject, school).getTeacher());
+				}
+			} else {
+				// リザルトセットが存在しない場合nullをセット
+				subject = null;
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return subject;
+
+	}
+
+
+	public Subject get(String cd, School school, boolean isFromChargeDao) throws Exception {
+
+		// 科目Beanを宣言
+		Subject subject = new Subject();
+
+		// データベースへのコネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		try {
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement("SELECT * FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
+			// プリペアードステートメントに学校コードと科目コードをバインド
+			statement.setString(1, school.getCd());
+			statement.setString(2, cd);
+
+			// プリペアードステートメントを実行
+			ResultSet resultSet = statement.executeQuery();
+
+			// Daoを宣言
 			SchoolDao schoolDao = new SchoolDao();
 
 			if (resultSet.next()) {
@@ -92,8 +156,9 @@ public class SubjectDao extends Dao {
 			// プリペアードステートメントを実行
 			ResultSet resultSet = statement.executeQuery();
 
-			// 学校Daoを宣言
+			// Daoを宣言
 			SchoolDao schoolDao = new SchoolDao();
+			ChargeDao chargeDao = new ChargeDao();
 
 			// リザルトセットを全件走査
 			while (resultSet.next()) {
@@ -105,6 +170,10 @@ public class SubjectDao extends Dao {
 				subject.setName(resultSet.getString("NAME"));
 				subject.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
 
+				if (chargeDao.get(subject, school) != null) {
+				subject.setTeacher(chargeDao.get(subject, school).getTeacher());
+
+				}
 				//listに追加
 				list.add(subject);
 			}
