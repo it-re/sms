@@ -40,6 +40,11 @@
 					</c:forEach>
 				</table>
 
+				<div>
+					<%-- 画面設計書④ --%>
+					<a href="TeacherSubjectList.action">教師ごとの担当科目はこちら</a>
+				</div>
+
 		</section>
 	</c:param>
 </c:import>
