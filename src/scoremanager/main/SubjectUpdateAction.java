@@ -1,6 +1,8 @@
 package scoremanager.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpSession;
 import bean.School;
 import bean.Subject;
 import bean.Teacher;
+import dao.ChargeDao;
 import dao.SubjectDao;
+import dao.TeacherDao;
 import tool.Action;
 
 
@@ -32,11 +36,19 @@ public class SubjectUpdateAction extends Action {
 
 		String name = ""; //科目名
 
+		Teacher chargeteacher = new Teacher();
+
+		List<Teacher> teacherlist = new ArrayList<>();
+
 		School school = new School();
 
 		Subject subject = new Subject();
 
 		SubjectDao subjectDao = new SubjectDao();
+
+		ChargeDao chargeDao = new ChargeDao();
+
+		TeacherDao teacherDao = new TeacherDao();
 
 		Map<String, String> errors = new HashMap<>();
 
@@ -48,6 +60,8 @@ public class SubjectUpdateAction extends Action {
 
 		name = req.getParameter("name");
 
+
+
 		//学校を取得
 
 //		school = req.getParameter(schoolDao.teacher.);
@@ -57,6 +71,14 @@ public class SubjectUpdateAction extends Action {
 		/* 1件のデータを取得する */
 
 		subject = subjectDao.get(cd, school);
+		teacherlist = teacherDao.filter(school);
+
+
+
+		if (chargeDao.get(subject, teacher.getSchool()) != null) {
+			chargeteacher = chargeDao.get(subject, teacher.getSchool()).getTeacher();
+			req.setAttribute("chargeteacher", chargeteacher);
+		}
 
 		// nullチェック
 
@@ -87,6 +109,8 @@ public class SubjectUpdateAction extends Action {
 		req.setAttribute("cd", cd);
 
 		req.setAttribute("name", name);
+
+		req.setAttribute("teacherlist", teacherlist);
 
 		//JSPへフォワード
 
