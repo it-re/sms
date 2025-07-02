@@ -216,7 +216,7 @@ public class ChargeDao extends Dao {
 			} else {
 				// データが存在した場合、担当教師を更新
 				// プリペアードステートメントにUPDATE文をセット
-				statement = connection.prepareStatement("UPDATE INTO SET TEACHER_ID = ? WHERE SUBJECT_ID = ?");
+				statement = connection.prepareStatement("UPDATE CHARGE SET TEACHER_ID = ? WHERE SUBJECT_ID = ?");
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, teacher.getId());
 				statement.setString(2, subject.getCd());
