@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.Charge;
 import bean.Subject;
 import bean.Teacher;
+import dao.ChargeDao;
 import dao.SubjectDao;
 import tool.Action;
 
@@ -23,15 +25,19 @@ public class SubjectListAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		/* ローカル変数の宣言 */
+		List<Charge> chargelist = null;
 		List<Subject> subjects = null; //科目リスト
 		SubjectDao subjectDao = new SubjectDao(); //科目Dao
+		ChargeDao chargeDao = new ChargeDao();
 		Map<String, String> errors = new HashMap<>(); //エラーメッセージ
 
 		/* データベースからの情報取得 */
 		subjects = subjectDao.filter(teacher.getSchool());
+		chargelist = chargeDao.filter(teacher.getSchool());
 
 		// リクエストに科目リストをセット
 		req.setAttribute("subjects", subjects);
+		req.setAttribute("chargelist", chargelist);
 
 
 
