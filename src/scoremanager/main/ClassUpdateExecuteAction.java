@@ -35,6 +35,9 @@ public class ClassUpdateExecuteAction extends Action {
 		newclassnum = req.getParameter("newclassnum");
 		class_num = req.getParameter("classnum");
 
+		//リクエストに値をセット
+		req.setAttribute("classnum", class_num);
+
 		try {
 			Integer.parseInt(newclassnum);
 			if (classnumDao.get(class_num, teacher.getSchool())== null) { // クラスが重複している場合
@@ -44,6 +47,9 @@ public class ClassUpdateExecuteAction extends Action {
 			} else if(classnumDao.get(newclassnum, teacher.getSchool())!= null){
 				errors.put("1", "クラス番号が重複しています");
 				req.setAttribute("errors", errors);
+			} else if(newclassnum == null || newclassnum.length() != 3) {
+				errors.put("1", "クラス番号は3文字で入力してください。");
+				req.setAttribute("errors", errors);
 			} else {
 				// subjectに科目情報をセット
 				classnum.setClass_num(class_num);
@@ -52,14 +58,15 @@ public class ClassUpdateExecuteAction extends Action {
 				// saveメソッドで情報を登録
 				classnumDao.save(classnum, newclassnum);
 			}
+			//成功しなかった時に元の値へ戻す
+			req.setAttribute("newclassnum", newclassnum);
 		} catch(Exception e) {
 			errors.put("1", "クラス番号は数値で入力してください");
 			req.setAttribute("errors", errors);
+			req.setAttribute("newclassnum", class_num);
 		}
 
-		//リクエストに値をセット
-		req.setAttribute("newclassnum", newclassnum);
-		req.setAttribute("classnum", class_num);
+
 
 		// JSPへフォワード
 		if (errors.isEmpty()) { // エラーメッセージがない場合

@@ -43,10 +43,26 @@
 <input class="form-control" type="text" id="name" name="name"
 					 value="${name}" required maxlength="20"/>
 </div>
+<br>
 
 
-				<div class="mx-auto py-2">
+
+<%-- 担当教師追加 --%>
+<div class="col-4">
+	<label class="form-label" for="student-f1-select">担当教師</label>
+	<select class="form-select" id="student-f1-select" name="teacher">
+			<option value="">--------</option>
+		<c:forEach var="teacher" items="${teacherlist }">
+			<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+			<option value="${teacher.id }" <c:if test="${teacher.id==chargeteacher.id }">selected</c:if>>${teacher.name }</option>
+		</c:forEach>
+	</select>
+</div>
+
+
+
 <%-- 画面設計書⑥ --%>
+<div class="mx-auto py-2">
 <button class="btn btn-primary" id="change" name="change">変更</button>
 </div>
 </form>
@@ -55,6 +71,6 @@
 			<%-- 画面設計書⑦ --%>
 <a href="SubjectList.action">戻る</a>
 
-		</section>
+</section>
 </c:param>
 </c:import>
