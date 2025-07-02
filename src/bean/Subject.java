@@ -11,6 +11,7 @@ public class Subject implements Serializable {
 
 	private School school;
 
+	private Teacher teacher;
 
 	public String getCd() {
 		return cd;
@@ -35,6 +36,15 @@ public class Subject implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
 
 
 }
