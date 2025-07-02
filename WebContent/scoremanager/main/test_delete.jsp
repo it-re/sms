@@ -53,6 +53,7 @@
 					<br>
 					<br>
 
+				<div>
 					<%-- 画面設計書④ --%>
 					<a href="TestRegist.action">戻る</a>
 				</div>
