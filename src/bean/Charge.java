@@ -3,33 +3,21 @@ package bean;
 import java.io.Serializable;
 
 public class Charge implements Serializable {
-	private String teacherId;
-	private String subjectCd;
-	private String teacherName;
-	private String subjectName;
-	public String getTeacherNo() {
-		return teacherId;
+	private Teacher teacher;
+	private Subject subject;
+	public Teacher getTeacher() {
+		return teacher;
 	}
-	public void setTeacherNo(String teacherId) {
-		this.teacherId = teacherId;
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
 	}
-	public String getSubjectCd() {
-		return subjectCd;
+	public Subject getSubject() {
+		return subject;
 	}
-	public void setSubjectCd(String subjectCd) {
-		this.subjectCd = subjectCd;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
-	public String getTeacherName() {
-		return teacherName;
-	}
-	public void setTeacherName(String teacherName) {
-		this.teacherName = teacherName;
-	}
-	public String getSubjectName() {
-		return subjectName;
-	}
-	public void setSubjectName(String subjectName) {
-		this.subjectName = subjectName;
-	}
+
+
 
 }
