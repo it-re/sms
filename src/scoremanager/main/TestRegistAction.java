@@ -81,12 +81,6 @@ public class TestRegistAction extends Action {
 		}
 
 
-		//DBからデータを取得
-		//ログインユーザの学校コードをもとに科目番号の一覧を取得
-//		List<Test> list = testDao.filter(entYear, classNum, subjectObj, count, teacher.getSchool());
-
-		//レスポンス値をセット
-
 		/* debug */
 //		System.out.println("classNum:" + classNum);
 		System.out.println("subject:" + subject);
@@ -113,17 +107,10 @@ public class TestRegistAction extends Action {
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set",list);
 		req.setAttribute("subject_cd_set", subjectList);
-		//req.setAttribute("count_set", count);
 
-		// subjectListの中身は存在するのか？
 		/* 確認用debug code */
-//		for (Subject s : subjectList) {
-//			System.out.println("debug:" + s.getCd() + ":" + s.getName());
-//		}
-//
-//		System.out.println("debug:" + teacher.getSchool().getCd());
-		System.out.println("test:" + test);
 		System.out.println("count" + count);
+
 
 		req.setAttribute("f1", entYear);// 入学年度
 		req.setAttribute("f2", classNum);// クラス

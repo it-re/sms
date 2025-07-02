@@ -40,8 +40,9 @@
 					<input type="hidden" name="entYear" value="${test.student.entYear}">
 					<input type="hidden" name="classNum" value="${test.student.classNum}">
 					<input type="hidden" name="student_no" value="${test.student.no}">
-					<input type="hidden" name="subject_name" value="${subject.name}">
+					<input type="hidden" name="subject_cd" value="${subject.cd}">
 					<input type="hidden" name="test_no" value="${test.no}">
+					<input type="hidden" name="test_point" value="${test.point}">
 
 			 		<button class="btn btn-danger" id="delete" name="delete" value="delete">削除</button>
 					</c:otherwise>
