@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.Charge;
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
 
@@ -70,6 +71,64 @@ public class ChargeDao extends Dao {
 		}
 
 		return charge;
+	}
+
+	// filter - 学校から、その学校の担当科目データのリストを取得
+	// 引数1 school - 情報を取得したい学校を指定
+	public List<Charge> filter(School school) throws Exception {
+
+		// データベースへのコネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		//リストを宣言
+		List<Charge> list = new ArrayList<>();
+
+		// DAOを宣言
+		TeacherDao teacherDao = new TeacherDao();
+		SubjectDao subjectDao = new SubjectDao();
+
+		try {
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement("SELECT CD, TEACHER_ID, SUBJECT_CD FROM SCHOOL LEFT JOIN CHARGE WHERE CD = 'oom';");
+			// 科目コードをバインド
+			statement.setString(1, school.getCd());
+
+			// プリペアードステートメントを実行
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Charge charge = new Charge();
+
+				charge.setTeacher(teacherDao.get(resultSet.getString("TEACHER_ID")));
+				charge.setSubject(subjectDao.get(resultSet.getString("SUBJECT_CD"), school));
+
+				list.add(charge);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
 	}
 
 	// filter - 教師から、その教師の担当科目のリストを取得
