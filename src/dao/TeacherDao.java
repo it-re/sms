@@ -46,6 +46,8 @@ public class TeacherDao extends Dao {
 				teacher.setName(resultSet.getString("name"));
 				// 学校フィールドには学校コードで検索した学校インスタンスをセット
 				teacher.setSchool(schoolDao.get(resultSet.getString("school_cd")));
+				//ログインしているユーザーが権限を持っているかをセットする
+				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
 			} else {
 				// リザルトセットが存在しない場合
 				// 教員インスタンスにnullをセット
@@ -127,7 +129,7 @@ public class TeacherDao extends Dao {
 				teacher.setId(resultSet.getString("ID"));
 				teacher.setName(resultSet.getString("NAME"));
 				teacher.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
-
+				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
 
 				//listに追加
 				list.add(teacher);

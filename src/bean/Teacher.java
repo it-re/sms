@@ -3,6 +3,13 @@ package bean;
 import java.io.Serializable;
 
 public class Teacher extends User implements Serializable {
+
+	/**
+	 * 教員権限用:boolean
+	 */
+	private boolean isAdmin;
+
+
 	/**
 	 * 教員ID:String
 	 */
@@ -33,6 +40,15 @@ public class Teacher extends User implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 
 	public String getPassword() {
 		return password;

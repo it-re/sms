@@ -38,6 +38,7 @@ public class SubjectListAction extends Action {
 		// リクエストに科目リストをセット
 		req.setAttribute("subjects", subjects);
 		req.setAttribute("chargelist", chargelist);
+		req.setAttribute("isAdmin", teacher.isAdmin());
 
 
 

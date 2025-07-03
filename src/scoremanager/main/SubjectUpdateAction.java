@@ -112,6 +112,8 @@ public class SubjectUpdateAction extends Action {
 
 		req.setAttribute("teacherlist", teacherlist);
 
+		
+
 		//JSPへフォワード
 
 		req.getRequestDispatcher("subject_update.jsp").forward(req, res);
