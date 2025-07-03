@@ -33,7 +33,17 @@
 						<tr>
 							<td>${subject.cd}</td>
 							<td>${subject.name}</td>
-							<td>${subject.teacher.name}</td>
+						<td>
+						<c:choose>
+							<c:when test="${subject.teacher.name != null}">
+								${subject.teacher.name}
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
+						</td>
+
 							<td><a href="SubjectUpdate.action?cd=${subject.cd}">変更</a></td>
 							<td><a href="SubjectDelete.action?cd=${subject.cd}">削除</a></td>
 						</tr>
