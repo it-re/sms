@@ -57,4 +57,20 @@ public class Teacher extends User implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Teacher other = (Teacher) obj;
+		return id != null && id.equals(other.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }
+
+

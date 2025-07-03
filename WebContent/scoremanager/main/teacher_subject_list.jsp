@@ -19,9 +19,9 @@
 						<label class="form-label" for="student-f1-select">教師名</label>
 						<select class="form-select" id="student-f1-select" name="f1">
 							<option value="0">--------</option>
-							<c:forEach var="teacher_set" items="${teacher_set}">
-								<%-- 現在のsubjectと選択されていたf1が一致していた場合selectedを追記 --%>
-								<option value="${teacher.id}" <c:if test="${teacher.name ==f1}">selected</c:if>>${teacher.name}</option>
+							<c:forEach var="teacher" items="${teacher_set}">
+								<%-- 現在の教諭と選択されていたf1が一致していた場合selectedを追記 --%>
+								<option value="${teacher.id}" <c:if test="${teacher.id ==f1}">selected</c:if>>${teacher.name}</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -33,27 +33,36 @@
 				</div>
 			</form>
 
-			<form action="TeacherSubjectListExecute.action" method="get">
+
 
 			<!-- 必要なパラメータを hidden で渡す -->
 			<input type="hidden" name="f1" value="${f1}" />
 
 			<c:choose>
-				<c:when test="${teacherSubject > 0}">
-					<div>科目：${teacher.name}</div>
+				<c:when test="${not empty teacherSubject}">
 					<table class="table table-hover">
 						<tr>
-							<th>科目</th>
+							<th>科目コード</th>
+							<th>科目名</th>
+							<th></th>
+							<th></th>
 						</tr>
-						<c:forEach var="teacherSubject" items="${teacherSubject}">
+						<c:forEach var="teacher" items="${teacherSubject}">
 							<tr>
-								<td>${teacher.name}</td>
+								<td>${teacher.subject.cd}</td>
+								<td>${teacher.subject.name}</td>
+								<td><a href="SubjectUpdate.action?cd=${teacher.subject.cd}">変更</a></td>
+								<td><a href="SubjectDelete.action?cd=${teacher.subject.cd}">削除</a></td>
+
 							</tr>
 						</c:forEach>
 					</table>
 				</c:when>
 			</c:choose>
-			</form>
+			<div>
+					<%-- 画面設計書④ --%>
+					<a href="SubjectList.action">戻る</a>
+				</div>
 		</section>
 	</c:param>
 </c:import>

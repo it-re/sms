@@ -1,8 +1,10 @@
 package scoremanager.main;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,11 +13,9 @@ import javax.servlet.http.HttpSession;
 import bean.Charge;
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
 import dao.ChargeDao;
-import dao.ClassNumDao;
 import dao.SubjectDao;
-import dao.TestDao;
+import dao.TeacherDao;
 import tool.Action;
 
 public class TeacherSubjectListAction extends Action {
@@ -28,41 +28,39 @@ public class TeacherSubjectListAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		//ローカル変数の宣言
-		String teacherSet = "";
-		List<Test> test = null;
+		String teacherId = "";
 		Map<String ,String> errors = new HashMap<>();
 
 		//DAOを初期化
 		SubjectDao subjectDao = new SubjectDao();
-		TestDao testDao = new TestDao();
-		ClassNumDao classNumDao = new ClassNumDao();
 		ChargeDao chargeDao = new ChargeDao();
+		TeacherDao teacherDao = new TeacherDao();
 
 
 
 		// 科目コードから 科目情報を取得
 		List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
-		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
-		List<String> list = classNumDao.filter(teacher.getSchool());
-		List<Charge> teacherList = chargeDao.filter(teacher.getSchool());
+		// ログインユーザーの学校コードをもとに一覧を取得
 		List<Charge> teacherSubject = null;
 		//リクエストパラメーターの取得
 
-		teacherSet = req.getParameter("f1");
+		teacherId = req.getParameter("f1");
 
 
-		//ビジネスロック
-		/*
-		Subject subjectObj = null;
-		if (subject != null && !subject.equals("0") && !subject.isEmpty()) {
-			subjectObj = subjectDao.get(subject, teacher.getSchool());
+		// Chargeのリストを取得（担当教科ごとの情報）
+		List<Charge> chargeList = chargeDao.filter(teacher.getSchool());
+
+		// 重複のない教師リストを作成
+		Set<Teacher> uniqueTeachers = new LinkedHashSet<>();
+		for (Charge charge : chargeList) {
+		    uniqueTeachers.add(charge.getTeacher());
 		}
-		*/
 
-		/* debug */
-//		System.out.println("classNum:" + classNum);
 
-		if(teacherSet == null){
+
+
+
+		if(teacherId == null || teacherId.equals("0")){
 			//エラーメッセージ
 			errors.put("e1","担当教師を指定してください");
 			// リクエストにエラーメッセージをセット
@@ -71,14 +69,26 @@ public class TeacherSubjectListAction extends Action {
 		}else{
 			//DBからリストを取得
 			//検索後のリスト
-			teacherSubject = chargeDao.filter(teacher);
+			Teacher selectedTeacher = teacherDao.get(teacherId); // 選択された教師を取得
+			teacherSubject = chargeDao.filter(selectedTeacher);
+			req.setAttribute("teacher", selectedTeacher);// JSPで表示するためにセット
 
+			//デバック
+			System.out.println(teacherSubject);
 		}
 
 
-		req.setAttribute("f1", teacher);
 
-		req.setAttribute("teacher_set", teacherList);
+
+
+		//レスポンスをセット
+		req.setAttribute("f1", teacherId);
+
+		// JSPに渡す
+		req.setAttribute("teacher_set", uniqueTeachers);
+
+		req.setAttribute("teacherSubject", teacherSubject);
+
 
 		// JSPへフォワード 7
 		req.getRequestDispatcher("teacher_subject_list.jsp")
