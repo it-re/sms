@@ -195,8 +195,8 @@ public class ChargeDao extends Dao {
 	}
 
 	// save - 担当教師情報を登録
-	// 引数1 subject - 情報を登録したい科目
-	// 引数2 teacher - 情報を登録したい教師
+	// 引数1 subject - 情報を登録したい対象の科目
+	// 引数2 teacher - 情報を登録したい対象の教師
 	public boolean save(Subject subject, Teacher teacher) throws Exception {
 
 		// データベースへのコネクションを確立
@@ -261,8 +261,8 @@ public class ChargeDao extends Dao {
 	}
 
 	// delete - 担当教師情報を削除
-	// 引数1 subject - 情報を削除したい科目
-	// 引数2 teacher - 情報を削除したい学校に所属する教師 ログイン中のユーザーの指定を想定
+	// 引数1 subject - 情報を削除したい対象の科目
+	// 引数2 teacher - 情報を削除したい対象の教師
 	public boolean delete(Subject subject, Teacher teacher) throws Exception {
 
 		// コネクションを確立
