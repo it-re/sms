@@ -29,8 +29,10 @@ public class SubjectUpdateExecuteAction extends Action {
 		String subject_cd = ""; //科目コード
 		String subject_name = ""; //科目名
 		String teacher_id = "";
+		String oldteacher_id = "";
 		Teacher chargeteacher = new Teacher();
 		Subject subject = new Subject();
+		Teacher oldteacher = new Teacher();
 		SubjectDao subjectDao = new SubjectDao();
 		ChargeDao chargeDao = new ChargeDao();
 		TeacherDao teacherDao = new TeacherDao();
@@ -40,6 +42,10 @@ public class SubjectUpdateExecuteAction extends Action {
 		subject_cd = req.getParameter("cd");
 		subject_name = req.getParameter("name");
 		teacher_id = req.getParameter("teacher");
+		oldteacher_id = req.getParameter("oldteacher");
+
+
+		oldteacher = teacherDao.get(oldteacher_id);
 
 		if (subjectDao.get(subject_cd, teacher.getSchool())== null) { // 科目コードが重複している場合
 			errors.put("1", "科目が存在していません");
@@ -54,10 +60,13 @@ public class SubjectUpdateExecuteAction extends Action {
 			// saveメソッドで情報を登録
 			subjectDao.save(subject);
 			if (teacher_id.equals("")){
-				chargeDao.delete(subject, teacher.getSchool());
+				if (oldteacher != null){
+					chargeDao.delete(subject, oldteacher);
+				}
 			} else {
 				chargeteacher = teacherDao.get(teacher_id);
 				chargeDao.save(subject, chargeteacher);
+
 			}
 
 		}

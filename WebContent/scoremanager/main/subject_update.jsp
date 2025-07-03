@@ -59,6 +59,8 @@
 	</select>
 </div>
 
+<input type="hidden" value="${chargeteacher.id}" name="oldteacher">
+
 
 
 <%-- 画面設計書⑥ --%>
