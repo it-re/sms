@@ -91,7 +91,12 @@ public class ChargeDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT CD, TEACHER_ID, SUBJECT_CD FROM SCHOOL LEFT JOIN CHARGE WHERE CD = ?;");
+			statement = connection.prepareStatement(
+				"SELECT CD, TEACHER_ID, SUBJECT_CD FROM CHARGE "
+				+ "JOIN TEACHER ON TEACHER_ID = ID "
+				+ "JOIN SCHOOL ON SCHOOL_CD = CD "
+				+ "WHERE CD = ?");
+
 			// 科目コードをバインド
 			statement.setString(1, school.getCd());
 
@@ -278,7 +283,7 @@ public class ChargeDao extends Dao {
 			if (old != null) {
 				// データが存在した場合、データを削除
 				System.out.println("変更対象が存在");
-				// プリペアードステートメントにINSERT文をセット
+				// プリペアードステートメントにDELETE文をセット
 				statement = connection.prepareStatement("DELETE FROM CHARGE WHERE TEACHER_ID = ? AND SUBJECT_CD = ?");
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, teacher.getId());
