@@ -93,8 +93,8 @@ public class ChargeDao extends Dao {
 			// プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement(
 				"SELECT CD, TEACHER_ID, SUBJECT_CD FROM CHARGE "
-				+ "JOIN TEACHER ON TEACHER_ID = ID "
-				+ "JOIN SCHOOL ON SCHOOL_CD = CD "
+				+ "JOIN TEACHER ON CHARGE.TEACHER_ID = TEACHER.ID "
+				+ "JOIN SCHOOL ON TEACHER.SCHOOL_CD = SCHOOL.CD "
 				+ "WHERE CD = ?");
 
 			// 科目コードをバインド
