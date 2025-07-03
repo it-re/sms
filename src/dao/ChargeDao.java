@@ -257,7 +257,7 @@ public class ChargeDao extends Dao {
 
 	// delete - 担当教師情報を削除
 	// 引数1 subject - 情報を削除したい科目
-	// 引数2 teacher - 情報を削除したい教師
+	// 引数2 teacher - 情報を削除したい学校に所属する教師 ログイン中のユーザーの指定を想定
 	public boolean delete(Subject subject, Teacher teacher) throws Exception {
 
 		// コネクションを確立
@@ -274,6 +274,7 @@ public class ChargeDao extends Dao {
 
 			if (old != null) {
 				// データが存在した場合、データを削除
+
 				// プリペアードステートメントにINSERT文をセット
 				statement = connection.prepareStatement("DELETE FROM CHARGE WHERE TEACHER_ID = ? AND SUBJECT_CD = ?");
 				// プリペアードステートメントに値をバインド

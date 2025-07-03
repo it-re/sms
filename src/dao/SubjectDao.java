@@ -48,7 +48,7 @@ public class SubjectDao extends Dao {
 				subject.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
 
 				if (chargeDao.get(subject, school) != null) {
-				subject.setTeacher(chargeDao.get(subject, school).getTeacher());
+					subject.setTeacher(chargeDao.get(subject, school).getTeacher());
 				}
 			} else {
 				// リザルトセットが存在しない場合nullをセット
@@ -79,7 +79,12 @@ public class SubjectDao extends Dao {
 
 	}
 
-
+	//getメソッド - 科目コードと学校コードから一件の科目データを取得 ChargeDaoから呼び出す際に使用
+	//通常のgetメソッドと異なり、isFromChargeDaoをtrueに指定することで担当教師取得処理をスキップできる（無限ループ対策）
+	//isFromChargeDaoにfalseを指定することで通常通り担当教師を取得することもできるが、その場合こちらのgetを使う意味はあまりない
+	//引数1 cd - 科目コードを指定
+	//引数2 school - 学校Beanを指定
+	//引数3 isFromChargeDao ChargeDaoから呼び出したものかどうかを指定
 	public Subject get(String cd, School school, boolean isFromChargeDao) throws Exception {
 
 		// 科目Beanを宣言
@@ -102,6 +107,8 @@ public class SubjectDao extends Dao {
 
 			// Daoを宣言
 			SchoolDao schoolDao = new SchoolDao();
+			ChargeDao chargeDao = new ChargeDao();
+
 
 			if (resultSet.next()) {
 				// リザルトセットが存在する場合
@@ -109,6 +116,10 @@ public class SubjectDao extends Dao {
 				subject.setCd(resultSet.getString("CD"));
 				subject.setName(resultSet.getString("NAME"));
 				subject.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
+
+				if (!isFromChargeDao) {
+					subject.setTeacher(chargeDao.get(subject, school).getTeacher());
+				}
 			} else {
 				// リザルトセットが存在しない場合nullをセット
 				subject = null;
