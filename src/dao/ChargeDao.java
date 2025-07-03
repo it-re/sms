@@ -267,19 +267,25 @@ public class ChargeDao extends Dao {
 
 		// 実行件数
 		int count = 0;
-
+		System.out.println("Subject_Cd = " + subject.getCd());
+		System.out.println("Teacher_Id = " + teacher.getId());
 		try {
+
+
 			// データベースから担当教師情報を取得
 			Charge old = get(subject, teacher.getSchool());
 
 			if (old != null) {
 				// データが存在した場合、データを削除
-
+				System.out.println("変更対象が存在");
 				// プリペアードステートメントにINSERT文をセット
 				statement = connection.prepareStatement("DELETE FROM CHARGE WHERE TEACHER_ID = ? AND SUBJECT_CD = ?");
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, teacher.getId());
 				statement.setString(2, subject.getCd());
+
+			} else {
+				System.out.println("変更対象が存在しない");
 			}
 
 			// プリペアードステートメントを実行
