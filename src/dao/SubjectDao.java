@@ -289,10 +289,9 @@ public class SubjectDao extends Dao {
 		// プリペアードステートメント
 		PreparedStatement statement = null;
 		// 実行件数
-		int countCharge = 0;
 		int countSubject = 0;
 
-		// 更新が成功したかどうか
+		// 担当教師の削除が成功したかどうか
 		boolean isDeleteChargeSuccess = false;
 
 		// DAOを宣言

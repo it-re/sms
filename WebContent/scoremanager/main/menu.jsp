@@ -39,6 +39,13 @@
 					<a href="ClassList.action">クラス管理</a>
 				</div>
 
+
+				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
+					style="height: 10rem; background-color: #f5b47a;">
+					<a href="TeacherList.action">教師管理</a>
+				</div>
+
+
 			</div>
 		</section>
 	</c:param>

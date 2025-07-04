@@ -10,7 +10,7 @@
 	<li class="nav-item mx-3 mb-3"><a href="TestList.action">成績参照</a></li>
 	<li class="nav-item mb-3"><a href="SubjectList.action">科目管理</a></li>
 
-
 	<li class="nav-item mb-3"><a href="ClassList.action">クラス管理</a></li>
+	<li class="nav-item mb-3"><a href="TeacherList.action">教師管理</a></li>
 
 </ul>
