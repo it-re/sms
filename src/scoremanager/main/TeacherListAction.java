@@ -32,6 +32,7 @@ public class TeacherListAction extends Action {
 		// リクエストに科目リストをセット
 		req.setAttribute("teacherlist", teacherlist);
 		req.setAttribute("isAdmin", teacher.isAdmin());
+		//ログインユーザーのIDを取得
 		req.setAttribute("login_user", teacher.getId());
 
 

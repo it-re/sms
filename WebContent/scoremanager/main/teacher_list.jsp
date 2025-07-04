@@ -42,6 +42,7 @@
 							<c:if test="${isAdmin}">
 								<td><a href="TeacherUpdate.action?id=${teacher.id}">変更</a></td>
 								<td>
+									<%-- 削除する対象がログインユーザーだった場合非表示 --%>
 									<c:if test="${login_user!=teacher.id}">
 									<a href="TeacherDelete.action?id=${teacher.id}">削除</a>
 								</c:if>
