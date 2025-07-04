@@ -9,7 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import bean.Subject;
 import bean.Teacher;
+import dao.ChargeDao;
 import dao.SubjectDao;
+import dao.TeacherDao;
 import tool.Action;
 
 public class SubjectCreateExecuteAction extends Action {
@@ -22,13 +24,18 @@ public class SubjectCreateExecuteAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 		String subject_cd = ""; //科目コード
 		String subject_name = ""; //科目名
+		String teacher_id = "";
 		Subject subject = new Subject();
+		Teacher chargeteacher = new Teacher();
 		SubjectDao subjectDao = new SubjectDao();
+		ChargeDao chargeDao = new ChargeDao();
+		TeacherDao teacherDao = new TeacherDao();
 		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
 
 		//リクエストパラメーターの取得
 		subject_cd = req.getParameter("cd");
 		subject_name = req.getParameter("name");
+		teacher_id = req.getParameter("teacher");
 
 		if (subject_cd.length() != 3) {
 			errors.put("1", "科目コードは3文字で入力してください。");
@@ -48,6 +55,11 @@ public class SubjectCreateExecuteAction extends Action {
 				// saveメソッドで情報を登録
 				subjectDao.save(subject);
 			}
+		}
+
+		if (!teacher_id.equals("")){
+			chargeteacher = teacherDao.get(teacher_id);
+			chargeDao.save(subject, chargeteacher);
 		}
 
 		//リクエストに値をセット

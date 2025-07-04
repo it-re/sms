@@ -39,6 +39,22 @@
 					<%-- ⑤ --%>
 					<input class="form-control" type="text" id="name" name="name" value="${name}" required maxlength="20" placeholder="科目名を入力してください" />
 				</div>
+				<br>
+
+				<%-- 担当教師追加 --%>
+				<div class="col-4">
+					<label class="form-label" for="student-f1-select">担当教師</label>
+					<select class="form-select" id="student-f1-select" name="teacher">
+						<option value="">--------</option>
+					<c:forEach var="teacher" items="${teacherlist }">
+						<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+						<option value="${teacher.id }" >${teacher.name }</option>
+					</c:forEach>
+					</select>
+				</div>
+
+				<input type="hidden" value="${chargeteacher.id}" name="oldteacher">
+
 
 				<%-- ⑥ --%>
 				<div class="mx-auto py-2">
