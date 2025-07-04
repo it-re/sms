@@ -10,7 +10,7 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<section class="me=4">
+		<section class="me-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">担当教師ごとの科目検索画面</h2>
 
 			<form action="TeacherSubjectList.action" method="get">
@@ -38,22 +38,28 @@
 			<!-- 必要なパラメータを hidden で渡す -->
 			<input type="hidden" name="f1" value="${f1}" />
 
+			<c:if test="${isAdmin}">
+				<a href="SubjectCreate.action">新規登録</a>
+			</c:if>
 			<c:choose>
 				<c:when test="${not empty teacherSubject}">
 					<table class="table table-hover">
 						<tr>
 							<th>科目コード</th>
 							<th>科目名</th>
-							<th></th>
-							<th></th>
+							<c:if test="${isAdmin}">
+								<th></th>
+								<th></th>
+							</c:if>
 						</tr>
 						<c:forEach var="teacher" items="${teacherSubject}">
 							<tr>
 								<td>${teacher.subject.cd}</td>
 								<td>${teacher.subject.name}</td>
-								<td><a href="SubjectUpdate.action?cd=${teacher.subject.cd}">変更</a></td>
-								<td><a href="SubjectDelete.action?cd=${teacher.subject.cd}">削除</a></td>
-
+								<c:if test="${isAdmin}">
+									<td><a href="SubjectUpdate.action?cd=${teacher.subject.cd}">変更</a></td>
+									<td><a href="SubjectDelete.action?cd=${teacher.subject.cd}">削除</a></td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</table>

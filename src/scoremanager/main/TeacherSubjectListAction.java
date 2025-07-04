@@ -47,6 +47,8 @@ public class TeacherSubjectListAction extends Action {
 		teacherId = req.getParameter("f1");
 
 
+
+
 		// Chargeのリストを取得（担当教科ごとの情報）
 		List<Charge> chargeList = chargeDao.filter(teacher.getSchool());
 
@@ -83,6 +85,9 @@ public class TeacherSubjectListAction extends Action {
 
 		//レスポンスをセット
 		req.setAttribute("f1", teacherId);
+
+		req.setAttribute("isAdmin", teacher.isAdmin());
+
 
 		// JSPに渡す
 		req.setAttribute("teacher_set", uniqueTeachers);
