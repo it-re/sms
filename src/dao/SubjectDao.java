@@ -334,7 +334,7 @@ public class SubjectDao extends Dao {
 			throw e;
 		} finally {
 			// どちらも成功・または科目データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
-			if (countSubject == 1 && (isDeleteChargeSuccess || charge != null)) {
+			if (countSubject == 1 && (isDeleteChargeSuccess || charge == null)) {
 				connection.commit();
 			} else {
 				connection.rollback();
@@ -358,7 +358,7 @@ public class SubjectDao extends Dao {
 			}
 		}
 
-		if (countSubject == 1 && (isDeleteChargeSuccess || charge != null)) {
+		if (countSubject == 1 && (isDeleteChargeSuccess || charge == null)) {
 			// 更新が成功
 			return true;
 		} else {
