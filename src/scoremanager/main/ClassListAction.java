@@ -31,6 +31,7 @@ public class ClassListAction extends Action {
 
 		// リクエストに科目リストをセット
 		req.setAttribute("classlist", classlist);
+		req.setAttribute("isAdmin", teacher.isAdmin());
 
 
 
