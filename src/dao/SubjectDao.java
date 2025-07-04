@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.Charge;
 import bean.School;
 import bean.Subject;
 
@@ -288,27 +289,57 @@ public class SubjectDao extends Dao {
 		// プリペアードステートメント
 		PreparedStatement statement = null;
 		// 実行件数
-		int count = 0;
+		int countCharge = 0;
+		int countSubject = 0;
+
+		// 更新が成功したかどうか
+		boolean isDeleteChargeSuccess = false;
+
+		// DAOを宣言
+		ChargeDao chargeDao = new ChargeDao();
+
+		// 担当教師データを取得
+		Charge charge = chargeDao.get(subject, subject.getSchool());
 
 		try {
+			// 自動コミット無効化
+			connection.setAutoCommit(false);
+
 			// データベースから科目を取得
 			Subject old = get(subject.getCd(), subject.getSchool());
 
 			if (old != null) {
 				// 科目が存在した場合、科目を消す
+
+				// 自動コミット無効化
+				connection.setAutoCommit(false);
+
+				// 担当教師データが存在した場合、事前に削除
+				if (charge != null) {
+					isDeleteChargeSuccess = chargeDao.delete(charge.getSubject(), charge.getTeacher());
+
+				}
+
 				// プリペアードステートメントにDELETE文をセット
 				statement = connection.prepareStatement("DELETE FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getSchool().getCd());
 				statement.setString(2, subject.getCd());
 
-				count = statement.executeUpdate();
+				countSubject = statement.executeUpdate();
 			}
 
 
 		} catch (Exception e) {
 			throw e;
 		} finally {
+			// どちらも成功・または科目データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
+			if (countSubject == 1 && (isDeleteChargeSuccess || charge != null)) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
+
 			// プリペアードステートメントを閉じる
 			if (statement != null) {
 				try {
@@ -327,11 +358,11 @@ public class SubjectDao extends Dao {
 			}
 		}
 
-		if (count > 0) {
-			// 実行件数が1件以上ある場合
+		if (countSubject == 1 && (isDeleteChargeSuccess || charge != null)) {
+			// 更新が成功
 			return true;
 		} else {
-			// 実行件数が0件の場合
+			// 更新が失敗
 			return false;
 		}
 	}
