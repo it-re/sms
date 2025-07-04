@@ -111,7 +111,7 @@ public class TeacherDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT * FROM TEACHER WHERE SCHOOL_CD = ?");
+			statement = connection.prepareStatement("SELECT * FROM TEACHER WHERE SCHOOL_CD = ? ORDER BY ID");
 			// プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
 			// プリペアードステートメントを実行
@@ -248,14 +248,14 @@ public class TeacherDao extends Dao {
 //		ChargeDao chargeDao = new ChargeDao();
 //
 //		// 削除教師が担当している科目を取得
-//		Charge charge = chargeDao.get(subject, subject.getSchool());
+//		List<Charge> chargeList = chargeDao.filter(teacher);
 //
 //		try {
 //			// 自動コミット無効化
 //			connection.setAutoCommit(false);
 //
 //			// データベースから科目を取得
-//			Subject old = get(subject.getCd(), subject.getSchool());
+//			Teacher old = get(teacher.getId());
 //
 //			if (old != null) {
 //				// 科目が存在した場合、科目を消す
@@ -264,7 +264,7 @@ public class TeacherDao extends Dao {
 //				connection.setAutoCommit(false);
 //
 //				// 担当教師データが存在した場合、事前に削除
-//				if (charge != null) {
+//				if (chargeList.size() != null) {
 //					isDeleteChargeSuccess = chargeDao.delete(charge.getSubject(), charge.getTeacher());
 //
 //				}
