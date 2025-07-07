@@ -27,6 +27,7 @@
 				<table class="table table-hover">
 					<tr>
 						<th>クラスコード</th>
+						<th>担任</th>
 							<%-- マスター権限--%>
 						<c:if test="${isAdmin}">
 						<th></th>
@@ -35,9 +36,10 @@
 
 					<c:forEach var="item" items="${classlist}">
 						<tr>
-							<td>${item}</td>
+							<td>${item.class_num}</td>
+							<td>${item.teacher.name}</td>
 							<c:if test="${isAdmin}">
-								<td><a href="ClassUpdate.action?cd=${item}">変更</a></td>
+								<td><a href="ClassUpdate.action?cd=${item.class_num}">変更</a></td>
 							</c:if>
 						</tr>
 					</c:forEach>
