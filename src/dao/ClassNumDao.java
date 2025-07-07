@@ -183,7 +183,7 @@ public class ClassNumDao extends Dao {
 	 * @return 実行可否
 	 * @throws Exception
 	 */
-	public boolean save(ClassNum classNum, Teacher teacher) throws Exception {
+	public boolean save(ClassNum classNum) throws Exception {
 
 		// コネクションを確立
 		Connection connection = getConnection();
@@ -198,7 +198,7 @@ public class ClassNumDao extends Dao {
 			// プリペアードステートメントに値をバインド
 			statement.setString(1, classNum.getSchool().getCd());
 			statement.setString(2, classNum.getClass_num());
-			statement.setString(3, teacher.getId());
+			statement.setString(3, classNum.getTeacher().getId());
 			// プリペアードステートメントを実行
 			count = statement.executeUpdate();
 		} catch (Exception e) {
@@ -238,7 +238,7 @@ public class ClassNumDao extends Dao {
 	 * @return 変更可否
 	 * @throws Exception
 	 */
-	public boolean save(ClassNum classNum, String newClassNum, Teacher teacher) throws Exception {
+	public boolean save(ClassNum classNum, String newClassNum) throws Exception {
 
 		// コネクションを確立
 		Connection connection = getConnection();
@@ -253,7 +253,7 @@ public class ClassNumDao extends Dao {
 			statement.setString(1, newClassNum);
 			statement.setString(2, classNum.getSchool().getCd());
 			statement.setString(3, classNum.getClass_num());
-			statement.setString(3, teacher.getId());
+			statement.setString(3, classNum.getTeacher().getId());
 			// プリペアードステートメントを実行
 			count += statement.executeUpdate();
 			// プリペアードステートメントを閉じる
