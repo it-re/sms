@@ -14,6 +14,11 @@ public class ClassNum implements Serializable {
 	 */
 	private School school;
 
+	/**
+	 * 教師:Teacher
+	 */
+	private Teacher teacher;
+
 
 	/**
 	 * ゲッター・セッター
@@ -36,6 +41,15 @@ public class ClassNum implements Serializable {
 	public void setClass_num(String class_num) {
 		this.class_num = class_num;
 	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
 
 
 
