@@ -9,6 +9,7 @@ import java.util.List;
 
 import bean.ClassNum;
 import bean.School;
+import bean.Teacher;
 
 
 public class ClassNumDao extends Dao {
@@ -33,12 +34,14 @@ public class ClassNumDao extends Dao {
 
 			// 学校Daoを初期化
 			SchoolDao sDao = new SchoolDao();
+			TeacherDao teacherDao = new TeacherDao();
 
 			if (rSet.next()) {
 				// リザルトセットが存在する場合
 				// クラス番号インスタンスに検索結果をセット
 				classNum.setClass_num(rSet.getString("class_num"));
 				classNum.setSchool(sDao.get(rSet.getString("school_cd")));
+				classNum.setTeacher(teacherDao.get(rSet.getString("teacher_id")));
 			} else {
 				// リザルトセットが存在しない場合
 				// クラス番号インスタンスにnullをセット
@@ -89,6 +92,59 @@ public class ClassNumDao extends Dao {
 					.prepareStatement("select class_num from class_num where school_cd=? order by class_num");
 			// プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
+			// プリペアードステートメントを実行
+			ResultSet rSet = statement.executeQuery();
+
+			// リザルトセットを全件走査
+			while (rSet.next()) {
+				// リストにクラス番号を追加
+				list.add(rSet.getString("class_num"));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * filterメソッド 担任教師を指定してクラス番号の一覧を取得する
+	 *
+	 * @param teacher:Teacher
+	 * @return クラス番号の一覧:List<String>
+	 * @throws Exception
+	 */
+	public List<String> filter(Teacher teacher) throws Exception {
+		// リストを初期化
+		List<String> list = new ArrayList<>();
+		// データベースへのコネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		try {
+			// プリペアードステートメントにSQL文をセット
+			statement = connection
+					.prepareStatement("select class_num from class_num where teacher_id = ? order by class_num");
+			// プリペアードステートメントに学校コードをバインド
+			statement.setString(1, teacher.getId());
 			// プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
 
