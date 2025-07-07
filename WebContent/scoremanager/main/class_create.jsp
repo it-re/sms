@@ -34,6 +34,22 @@
                     <input class="form-control" type="text" id="class_num" name="class_num"
                         value="${class_num}" required maxlength="3" placeholder="クラス番号を入力してください" />
                 </div>
+                <br>
+                <c:if test="${not empty errors['4']}">
+                    <div class="mt-2 text-danger">${errors['4']}</div>
+                </c:if>
+
+                <%-- 担任追加 --%>
+				<div class="col-4">
+					<label class="form-label" for="student-f1-select">担任</label>
+					<select class="form-select" id="student-f1-select" name="teacher">
+						<option value="">--------</option>
+					<c:forEach var="teacher" items="${teacherlist }">
+						<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+						<option value="${teacher.id }" <c:if test="${teacher.id==chargeteacher.id }">selected</c:if>>${teacher.name }</option>
+					</c:forEach>
+					</select>
+				</div>
 
                 <div class="mx-auto py-2">
                     <button class="btn btn-secondary" id="create-button" name="end">登録して終了</button>

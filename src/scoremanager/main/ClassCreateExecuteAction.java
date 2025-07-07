@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import bean.ClassNum;
 import bean.Teacher;
 import dao.ClassNumDao;
+import dao.TeacherDao;
 import tool.Action;
 
 public class ClassCreateExecuteAction extends Action {
@@ -20,6 +21,10 @@ public class ClassCreateExecuteAction extends Action {
         HttpSession session = req.getSession(); // セッション
         Teacher teacher = (Teacher) session.getAttribute("user");
 
+        String teacher_id = "";
+        Teacher chargeteacher = new Teacher();
+        TeacherDao teacherDao = new TeacherDao();
+
         Map<String, String> errors = new HashMap<>();
         ClassNumDao classnumDao = new ClassNumDao();
 
@@ -27,6 +32,7 @@ public class ClassCreateExecuteAction extends Action {
 
         // 入力値をリクエストに保持（JSPに渡す用）
         req.setAttribute("class_num", class_numStr);
+        teacher_id = req.getParameter("teacher");
 
         // バリデーション（1）3文字でなければエラー
         if (class_numStr == null || class_numStr.length() != 3) {
@@ -47,18 +53,28 @@ public class ClassCreateExecuteAction extends Action {
 			req.setAttribute("errors", errors);
 		}
 
+		if (teacher_id.equals("")){
+			errors.put("4", "担任を入力してください");
+		}
+		 chargeteacher = teacherDao.get(teacher_id);
+
 
         // エラーがある場合は入力画面に戻る
         if (!errors.isEmpty()) {
+        	req.setAttribute("class_num", class_numStr);
+        	req.setAttribute("chargeteacher", chargeteacher);
+
             req.setAttribute("errors", errors);
-            req.getRequestDispatcher("class_create.jsp").forward(req, res);
+            req.getRequestDispatcher("ClassCreate.action").forward(req, res);
             return;
         }
 
         // 登録処理（問題ない場合）
         ClassNum classNum = new ClassNum();
+
         classNum.setClass_num(class_numStr);
         classNum.setSchool(teacher.getSchool());
+        classNum.setTeacher(chargeteacher);
         classnumDao.save(classNum);
 
         // 完了画面へ
