@@ -27,6 +27,7 @@
 					<tr>
 						<th>ID</th>
 						<th>教師名</th>
+						<th class="text-center">管理者権限</th>
 						<c:if test="${isAdmin}">
 							<th></th>
 							<th></th>
@@ -38,6 +39,17 @@
 						<tr>
 							<td>${teacher.id}</td>
 							<td>${teacher.name}</td>
+							<td class="text-center">
+									<%-- 管理者権限がある場合「◯」ない場合は「×」を表示 --%>
+									<c:choose>
+										<c:when test="${teacher.isAdmin() }">
+											◯
+										</c:when>
+										<c:otherwise>
+											×
+										</c:otherwise>
+									</c:choose>
+							</td>
 
 							<c:if test="${isAdmin}">
 								<td><a href="TeacherUpdate.action?id=${teacher.id}">変更</a></td>

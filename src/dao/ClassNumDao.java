@@ -9,6 +9,7 @@ import java.util.List;
 
 import bean.ClassNum;
 import bean.School;
+import bean.Teacher;
 
 
 public class ClassNumDao extends Dao {
@@ -33,12 +34,14 @@ public class ClassNumDao extends Dao {
 
 			// 学校Daoを初期化
 			SchoolDao sDao = new SchoolDao();
+			TeacherDao teacherDao = new TeacherDao();
 
 			if (rSet.next()) {
 				// リザルトセットが存在する場合
 				// クラス番号インスタンスに検索結果をセット
 				classNum.setClass_num(rSet.getString("class_num"));
 				classNum.setSchool(sDao.get(rSet.getString("school_cd")));
+				classNum.setTeacher(teacherDao.get(rSet.getString("teacher_id")));
 			} else {
 				// リザルトセットが存在しない場合
 				// クラス番号インスタンスにnullをセット
@@ -122,12 +125,65 @@ public class ClassNumDao extends Dao {
 	}
 
 	/**
+	 * filterメソッド 担任教師を指定してクラス番号の一覧を取得する
+	 *
+	 * @param teacher:Teacher
+	 * @return クラス番号の一覧:List<String>
+	 * @throws Exception
+	 */
+	public List<String> filter(Teacher teacher) throws Exception {
+		// リストを初期化
+		List<String> list = new ArrayList<>();
+		// データベースへのコネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		try {
+			// プリペアードステートメントにSQL文をセット
+			statement = connection
+					.prepareStatement("select class_num from class_num where teacher_id = ? order by class_num");
+			// プリペアードステートメントに学校コードをバインド
+			statement.setString(1, teacher.getId());
+			// プリペアードステートメントを実行
+			ResultSet rSet = statement.executeQuery();
+
+			// リザルトセットを全件走査
+			while (rSet.next()) {
+				// リストにクラス番号を追加
+				list.add(rSet.getString("class_num"));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
+	}
+
+	/**
 	 * 登録用のsaveメソッド
 	 * @param classNum
 	 * @return 実行可否
 	 * @throws Exception
 	 */
-	public boolean save(ClassNum classNum) throws Exception {
+	public boolean save(ClassNum classNum, Teacher teacher) throws Exception {
 
 		// コネクションを確立
 		Connection connection = getConnection();
@@ -138,10 +194,11 @@ public class ClassNumDao extends Dao {
 
 		try {
 			// プリペアードステートメントにINSERT文をセット
-			statement = connection.prepareStatement("insert into class_num(school_cd, class_num) values(?, ?)");
+			statement = connection.prepareStatement("insert into class_num(school_cd, class_num, teacher_id) values(?, ?, ?)");
 			// プリペアードステートメントに値をバインド
 			statement.setString(1, classNum.getSchool().getCd());
 			statement.setString(2, classNum.getClass_num());
+			statement.setString(3, teacher.getId());
 			// プリペアードステートメントを実行
 			count = statement.executeUpdate();
 		} catch (Exception e) {
@@ -181,7 +238,7 @@ public class ClassNumDao extends Dao {
 	 * @return 変更可否
 	 * @throws Exception
 	 */
-	public boolean save(ClassNum classNum, String newClassNum) throws Exception {
+	public boolean save(ClassNum classNum, String newClassNum, Teacher teacher) throws Exception {
 
 		// コネクションを確立
 		Connection connection = getConnection();
@@ -196,6 +253,7 @@ public class ClassNumDao extends Dao {
 			statement.setString(1, newClassNum);
 			statement.setString(2, classNum.getSchool().getCd());
 			statement.setString(3, classNum.getClass_num());
+			statement.setString(3, teacher.getId());
 			// プリペアードステートメントを実行
 			count += statement.executeUpdate();
 			// プリペアードステートメントを閉じる

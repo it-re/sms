@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.Charge;
 import bean.School;
 import bean.Teacher;
 
@@ -233,87 +234,83 @@ public class TeacherDao extends Dao {
 
 	// delete - 教師情報を削除する 紐づいた担当科目情報が存在する場合、同時に削除
 	// 引数1 teacher - 成績を削除したい教師beanを指定
-	public boolean delete(Teacher teacher) {
-//		// コネクションを確立
-//		Connection connection = getConnection();
-//		// プリペアードステートメント
-//		PreparedStatement statement = null;
-//		// 実行件数
-//		int countSubject = 0;
-//
-//		// 担当教師の削除が成功したかどうか
-//		boolean isDeleteChargeSuccess = false;
-//
-//		// DAOを宣言
-//		ChargeDao chargeDao = new ChargeDao();
-//
-//		// 削除教師が担当している科目を取得
-//		List<Charge> chargeList = chargeDao.filter(teacher);
-//
-//		try {
-//			// 自動コミット無効化
-//			connection.setAutoCommit(false);
-//
-//			// データベースから科目を取得
-//			Teacher old = get(teacher.getId());
-//
-//			if (old != null) {
-//				// 科目が存在した場合、科目を消す
-//
-//				// 自動コミット無効化
-//				connection.setAutoCommit(false);
-//
-//				// 担当教師データが存在した場合、事前に削除
-//				if (chargeList.size() != null) {
-//					isDeleteChargeSuccess = chargeDao.delete(charge.getSubject(), charge.getTeacher());
-//
-//				}
-//
-//				// プリペアードステートメントにDELETE文をセット
-//				statement = connection.prepareStatement("DELETE FROM SUBJECT WHERE SCHOOL_CD = ? AND CD = ?");
-//				// プリペアードステートメントに値をバインド
-//				statement.setString(1, subject.getSchool().getCd());
-//				statement.setString(2, subject.getCd());
-//
-//				countSubject = statement.executeUpdate();
-//			}
-//
-//
-//		} catch (Exception e) {
-//			throw e;
-//		} finally {
-//			// どちらも成功・または科目データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
-//			if (countSubject == 1 && (isDeleteChargeSuccess || charge == null)) {
-//				connection.commit();
-//			} else {
-//				connection.rollback();
-//			}
-//
-//			// プリペアードステートメントを閉じる
-//			if (statement != null) {
-//				try {
-//					statement.close();
-//				} catch (SQLException sqle) {
-//					throw sqle;
-//				}
-//			}
-//			// コネクションを閉じる
-//			if (connection != null) {
-//				try {
-//					connection.close();
-//				} catch (SQLException sqle) {
-//					throw sqle;
-//				}
-//			}
-//		}
-//
-//		if (countSubject == 1 && (isDeleteChargeSuccess || charge == null)) {
-//			// 更新が成功
-//			return true;
-//		} else {
-//			// 更新が失敗
-//			return false;
-//		}
-		return false;
+	public boolean delete(Teacher teacher) throws Exception{
+		// コネクションを確立
+		Connection connection = getConnection();
+		// プリペアードステートメント
+		PreparedStatement statement = null;
+
+		// 実行件数
+		int countTeacher = 0;
+		int countCharge = 0;
+
+		// 担当教師の削除が成功したかどうか
+		boolean isSuccess = false;
+
+		// DAOを宣言
+		ChargeDao chargeDao = new ChargeDao();
+
+		// 削除教師が担当している科目を取得
+		List<Charge> chargeList = chargeDao.filter(teacher);
+
+		try {
+			// 自動コミット無効化
+			connection.setAutoCommit(false);
+
+			// データベースから教師を取得
+			Teacher old = get(teacher.getId());
+
+			if (old != null) {
+				// 教師が存在した場合、科目を消す
+
+				// 自動コミット無効化
+				connection.setAutoCommit(false);
+
+				// 担当教師データが存在した場合、事前に削除
+				for(Charge charge : chargeList) {
+					if (chargeDao.delete(charge.getSubject(), charge.getTeacher())) {
+						countCharge++;
+					}
+				}
+
+				// プリペアードステートメントにDELETE文をセット
+				statement = connection.prepareStatement("DELETE FROM TEACHER WHERE ID = ?");
+				// プリペアードステートメントに値をバインド
+				statement.setString(1, teacher.getId());
+
+				countTeacher = statement.executeUpdate();
+			}
+
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// どちらも成功・または教師データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
+			if (countTeacher == 1 && countCharge == chargeList.size()) {
+				connection.commit();
+				isSuccess = true;
+			} else {
+				connection.rollback();
+			}
+
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return isSuccess;
 	}
 }

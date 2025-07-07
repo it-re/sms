@@ -10,6 +10,7 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
+		<section class="me=4">
 			<%-- ① --%>
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
 
@@ -96,6 +97,7 @@
 							<th>氏名</th>
 							<th>1回</th>
 							<th>2回</th>
+							<th>平均点</th>
 
 						</tr>
 						<c:forEach var="testListSubject" items="${list }">
@@ -124,6 +126,18 @@
 										</c:otherwise>
 									</c:choose>
 								</td>
+								<%-- 1回目か2回目のどちらかの点数がなかった場合、平均点を-にする --%>
+								<td>
+									<c:choose>
+										<c:when test="${testListSubject.getPoint(1) != -1 && testListSubject.getPoint(2) != -1}">
+											${(testListSubject.getPoint(1) + testListSubject.getPoint(2)) / 2 }
+										</c:when>
+										<c:otherwise>
+											-
+										</c:otherwise>
+									</c:choose>
+								</td>
+
 							</tr>
 						</c:forEach>
 					</table>
