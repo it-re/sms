@@ -7,11 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.School;
-import bean.Subject;
+import bean.ClassNum;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.SubjectDao;
 import tool.Action;
 
 
@@ -29,29 +27,21 @@ public class ClassUpdateAction extends Action {
 
 		/* 必要なローカル変数の定義 */
 
-		String num = ""; // クラス
+		String classNumStr = ""; // クラス番号
+		ClassNum classNum = new ClassNum();
 
-		School school = new School();
-
-		Subject subject = new Subject();
-
-		SubjectDao subjectDao = new SubjectDao();
-
-		ClassNumDao classnumDao = new ClassNumDao();
-
+		ClassNumDao classNumDao = new ClassNumDao();
 		Map<String, String> errors = new HashMap<>();
 
 		/* クラスを取得する */
 
-		num = req.getParameter("cd");
-
-		school = teacher.getSchool();
-
+		classNumStr = req.getParameter("cd");
+		classNum = classNumDao.get(classNumStr, teacher.getSchool());
 
 		/* リクエストにそれぞれの値を埋め込む */
 
-		req.setAttribute("newclassnum", num);
-		req.setAttribute("classnum", num);
+		req.setAttribute("newclassnum", classNumStr);
+		req.setAttribute("classnum", classNum);
 
 		//JSPへフォワード
 
