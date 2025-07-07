@@ -33,7 +33,7 @@
 			<br>
 
 			<%-- 画面設計書③ --%>
-			<a href="TestRegist.action">成績</a>
+			<a href="TestRegist.action">成績管理</a>
 		</section>
 	</c:param>
 </c:import>
