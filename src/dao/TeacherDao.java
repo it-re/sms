@@ -241,7 +241,7 @@ public class TeacherDao extends Dao {
 		PreparedStatement statement = null;
 
 		// 実行件数
-		int countSubject = 0;
+		int countTeacher = 0;
 		int countCharge = 0;
 
 		// 担当教師の削除が成功したかどうか
@@ -278,15 +278,15 @@ public class TeacherDao extends Dao {
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, teacher.getId());
 
-				countSubject = statement.executeUpdate();
+				countTeacher = statement.executeUpdate();
 			}
 
 
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			// どちらも成功・または科目データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
-			if (countSubject == 1 && countCharge == chargeList.size()) {
+			// どちらも成功・または教師データの削除が成功し担当教師データが存在しなかった場合はDB更新を確定する
+			if (countTeacher == 1 && countCharge == chargeList.size()) {
 				connection.commit();
 				isSuccess = true;
 			} else {
@@ -311,12 +311,6 @@ public class TeacherDao extends Dao {
 			}
 		}
 
-		if (countSubject == 1 && countCharge == chargeList.size()) {
-			// 更新が成功
-			return true;
-		} else {
-			// 更新が失敗
-			return false;
-		}
+		return isSuccess;
 	}
 }
