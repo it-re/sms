@@ -24,7 +24,7 @@
 				</div>
 				<div class="mx-auto py-2">
 					<label for="password">パスワード</label><br>
-					<input class="form-control" type="text" id="password" value="${password}" name="password" readonly />
+					<input class="form-control" type="text" id="password" name="password" value="${password}" name="password" required />
 				</div>
 				<div class="mx-auto py-2">
 					<label for="is_attend">登録者権限</label>
