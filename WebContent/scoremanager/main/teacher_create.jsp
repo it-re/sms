@@ -23,14 +23,11 @@
 				<%-- エラーメッセージ① --%>
 				<div class="mt-2 text-warning">${errors.get("1")}</div>
 
-				<%-- エラーメッセージ② --%>
-				<div class="mt-2 text-warning">${errors.get("2")}</div>
-
 				<%-- ② --%>
 				<div>
-					<label for="cd">教師ID</label>
+					<label for="id">教師ID</label>
 					<%-- ③ --%>
-					<input class="form-control" type="text" id="cd" name="cd" value="${cd}" required maxlength="3" placeholder="IDを入力してください" />
+					<input class="form-control" type="text" id="id" name="id" value="${id}" required maxlength="3" placeholder="IDを入力してください" />
 				</div>
 
 				<%-- ④ --%>
@@ -49,7 +46,7 @@
 
 				<div class="mx-auto py-2">
 					<label for="is_admin">管理者</label>
-					<input type="checkbox" id="is_admin" name="is_admin" />
+					<input type="checkbox" id="is_admin" name="is_admin" <c:if test="${is_admin}">checked</c:if>/>
 				</div>
 
 				<%-- ⑥ --%>
