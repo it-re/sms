@@ -117,7 +117,7 @@ public class TeacherDao extends Dao {
 		try {
 			// プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM FROM TEACHER "
-					+ "LEFT JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.SCHOOL_CD = ?");
+					+ "LEFT JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.SCHOOL_CD = ? ORDER BY TEACHER.ID");
 			// プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
 			// プリペアードステートメントを実行
