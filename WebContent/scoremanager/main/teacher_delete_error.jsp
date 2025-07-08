@@ -18,7 +18,7 @@
 
 		<section>
 			<%-- 画面設計書の① --%>
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">教師情報削除エラー</h2>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">教師削除エラー</h2>
 
 			<%-- 画面設計書の②のフォーム --%>
 				<p class="text-center">
