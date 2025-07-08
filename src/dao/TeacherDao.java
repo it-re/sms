@@ -30,8 +30,8 @@ public class TeacherDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM FROM TEACHER "
-					+ "JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.ID = ?");
+			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM.CLASS_NUM FROM TEACHER "
+					+ "LEFT JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.ID = ?");
 			// プリペアードステートメントに教員IDをバインド
 			statement.setString(1, id);
 			// プリペアードステートメントを実行
@@ -44,15 +44,15 @@ public class TeacherDao extends Dao {
 			if (resultSet.next()) {
 				// リザルトセットが存在する場合
 				// 教員インスタンスに検索結果をセット
-				teacher.setId(resultSet.getString("id"));
-				teacher.setPassword(resultSet.getString("password"));
-				teacher.setName(resultSet.getString("name"));
+				teacher.setId(resultSet.getString("TEACHER.ID"));
+				teacher.setPassword(resultSet.getString("TEACHER.PASSWORD"));
+				teacher.setName(resultSet.getString("TEACHER.NAME"));
 				// 学校フィールドには学校コードで検索した学校インスタンスをセット
-				teacher.setSchool(schoolDao.get(resultSet.getString("school_cd")));
+				teacher.setSchool(schoolDao.get(resultSet.getString("TEACHER.SCHOOL_CD")));
 				//ログインしているユーザーが権限を持っているか
-				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
+				teacher.setAdmin(resultSet.getBoolean("TEACHER.ISADMIN"));
 				// 担任クラス番号
-				teacher.setClassNum(resultSet.getString("class_num"));
+				teacher.setClassNum(resultSet.getString("CLASS_NUM.CLASS_NUM"));
 			} else {
 				// リザルトセットが存在しない場合
 				// 教員インスタンスにnullをセット
@@ -117,7 +117,7 @@ public class TeacherDao extends Dao {
 		try {
 			// プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM FROM TEACHER "
-					+ "JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.SCHOOL_CD = ?");
+					+ "LEFT JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.SCHOOL_CD = ?");
 			// プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
 			// プリペアードステートメントを実行
@@ -132,12 +132,12 @@ public class TeacherDao extends Dao {
 				Teacher teacher = new Teacher();
 
 				// 科目Beanに検索結果をセット
-				teacher.setId(resultSet.getString("ID"));
-				teacher.setName(resultSet.getString("NAME"));
-				teacher.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
-				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
+				teacher.setId(resultSet.getString("TEACHER.ID"));
+				teacher.setName(resultSet.getString("TEACHER.NAME"));
+				teacher.setSchool(schoolDao.get(resultSet.getString("TEACHER.SCHOOL_CD")));
+				teacher.setAdmin(resultSet.getBoolean("TEACHER.ISADMIN"));
 				// 担任クラス番号
-				teacher.setClassNum(resultSet.getString("class_num"));
+				teacher.setClassNum(resultSet.getString("CLASS_NUM.CLASS_NUM"));
 
 				//listに追加
 				list.add(teacher);
