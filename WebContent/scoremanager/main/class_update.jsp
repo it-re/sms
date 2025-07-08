@@ -49,6 +49,7 @@
                 <div class="mt-2 text-warning">${errors['2']}</div>
 
 
+
                 <%-- 担任選択 --%>
 				<div class="col-4">
 					<label class="form-label" for="student-f1-select">担任</label>

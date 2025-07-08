@@ -58,6 +58,10 @@ public class ClassCreateExecuteAction extends Action {
 		}
 		 chargeteacher = teacherDao.get(teacher_id);
 
+		if (classnumDao.filter(chargeteacher).size() != 0) {
+			errors.put("5", "この担任はすでに登録されています");
+		}
+
 
         // エラーがある場合は入力画面に戻る
         if (!errors.isEmpty()) {

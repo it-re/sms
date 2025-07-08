@@ -63,9 +63,13 @@ public class ClassUpdateExecuteAction extends Action {
 			} else if(newClassNumStr == null || newClassNumStr.length() != 3) {
 				errors.put("1", "クラス番号は3文字で入力してください。");
 			} else {
+				if (classNumDao.filter(newClassNum.getTeacher()).size() != 0 && !oldClassNum.getTeacher().equals(newClassNum.getTeacher()) ) {
+					errors.put("2", "この担任はすでに登録されています");
+				} else {
+					// 問題がなければsaveメソッドで情報を登録
+					classNumDao.save(oldClassNum, newClassNum);
+				}
 
-				// 問題がなければsaveメソッドで情報を登録
-				classNumDao.save(oldClassNum, newClassNum);
 			}
 		} catch(NumberFormatException e) {
 			errors.put("1", "クラス番号は数値で入力してください");
