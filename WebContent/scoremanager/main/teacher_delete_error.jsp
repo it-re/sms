@@ -1,4 +1,4 @@
-<%-- 教師削除完了JSP --%>
+<%-- 教師削除エラーJSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
