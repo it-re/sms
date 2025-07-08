@@ -9,6 +9,18 @@
 	</c:param>
 
 	<c:param name="scripts">
+	<%-- パスワード表示の仕方を変更 --%>
+	<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkbox = document.getElementById("showPasswordReg");
+        const pwInput = document.getElementById("pw");
+        if (checkbox) {
+            checkbox.addEventListener("change", function() {
+                pwInput.type = this.checked ? "text" : "password";
+            });
+        }
+    });
+    </script>
 
 	</c:param>
 
@@ -34,7 +46,11 @@
 				<div>
 					<label for="pw">パスワード</label>
 					<%-- ⑤ --%>
-					<input class="form-control" type="text" id="pw" name="pw" value="${pw}" required maxlength="30" placeholder="パスワードを入力してください" />
+					<input class="form-control" type="password" id="pw" name="pw" value="" required maxlength="30" placeholder="パスワードを入力してください" />
+					<%-- パスワード表示部分 --%>
+					<input type="checkbox" id="showPasswordReg">
+    				<label for="showPasswordReg">パスワードを表示</label>
+
 				</div>
 
 

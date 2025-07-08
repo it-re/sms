@@ -7,7 +7,20 @@
 		得点管理システム
 	</c:param>
 
-	<c:param name="scripts"></c:param>
+	<c:param name="scripts">
+	<%-- パスワード表示の仕方を変更 --%>
+	<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkbox = document.getElementById("showPasswordUpdate");
+        const pwInput = document.getElementById("password");
+        if (checkbox) {
+            checkbox.addEventListener("change", function() {
+                pwInput.type = this.checked ? "text" : "password";
+            });
+        }
+    });
+	</script>
+	</c:param>
 
 	<c:param name="content">
 		<section>
@@ -24,7 +37,11 @@
 				</div>
 				<div class="mx-auto py-2">
 					<label for="password">パスワード</label><br>
-					<input class="form-control" type="text" id="password" name="password" value="${password}" name="password" required />
+					<input class="form-control" type="password" id="password" name="password" value="${password}" name="password" required />
+					<%-- パスワード表示部分 --%>
+					<input type="checkbox" id="showPasswordUpdate">
+    				<label for="showPasswordUpdate">パスワードを表示</label>
+
 				</div>
 				<div class="mx-auto py-2">
 					<label for="is_attend">登録者権限</label>
