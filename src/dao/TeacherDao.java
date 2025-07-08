@@ -30,7 +30,8 @@ public class TeacherDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("select * from teacher where id=?");
+			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM FROM TEACHER "
+					+ "JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.ID = ?");
 			// プリペアードステートメントに教員IDをバインド
 			statement.setString(1, id);
 			// プリペアードステートメントを実行
@@ -38,6 +39,7 @@ public class TeacherDao extends Dao {
 
 			// 学校Daoを初期化
 			SchoolDao schoolDao = new SchoolDao();
+			ClassNumDao classNumDao = new ClassNumDao();
 
 			if (resultSet.next()) {
 				// リザルトセットが存在する場合
@@ -47,8 +49,10 @@ public class TeacherDao extends Dao {
 				teacher.setName(resultSet.getString("name"));
 				// 学校フィールドには学校コードで検索した学校インスタンスをセット
 				teacher.setSchool(schoolDao.get(resultSet.getString("school_cd")));
-				//ログインしているユーザーが権限を持っているかをセットする
+				//ログインしているユーザーが権限を持っているか
 				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
+				// 担任クラス番号
+				teacher.setClassNum(resultSet.getString("class_num"));
 			} else {
 				// リザルトセットが存在しない場合
 				// 教員インスタンスにnullをセット
@@ -112,7 +116,8 @@ public class TeacherDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT * FROM TEACHER WHERE SCHOOL_CD = ? ORDER BY ID");
+			statement = connection.prepareStatement("SELECT TEACHER.ID, TEACHER.PASSWORD, TEACHER.NAME, TEACHER.SCHOOL_CD, TEACHER.ISADMIN, CLASS_NUM FROM TEACHER "
+					+ "JOIN CLASS_NUM ON TEACHER.ID = CLASS_NUM.TEACHER_ID WHERE TEACHER.SCHOOL_CD = ?");
 			// プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
 			// プリペアードステートメントを実行
@@ -131,6 +136,8 @@ public class TeacherDao extends Dao {
 				teacher.setName(resultSet.getString("NAME"));
 				teacher.setSchool(schoolDao.get(resultSet.getString("SCHOOL_CD")));
 				teacher.setAdmin(resultSet.getBoolean("isAdmin"));
+				// 担任クラス番号
+				teacher.setClassNum(resultSet.getString("class_num"));
 
 				//listに追加
 				list.add(teacher);

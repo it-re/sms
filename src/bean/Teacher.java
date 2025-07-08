@@ -31,6 +31,11 @@ public class Teacher extends User implements Serializable {
 	private School school;
 
 	/**
+	 * 担任クラス番号:ClassNum
+	 */
+	private String classNum;
+
+	/**
 	 * ゲッター・セッター
 	 */
 	public String getId() {
@@ -74,6 +79,15 @@ public class Teacher extends User implements Serializable {
 		this.school = school;
 	}
 
+
+
+	public String getClassNum() {
+		return classNum;
+	}
+
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
