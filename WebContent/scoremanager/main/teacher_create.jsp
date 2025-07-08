@@ -61,7 +61,7 @@
 				</div>
 
 				<div class="mx-auto py-2">
-					<label for="is_admin">管理者</label>
+					<label for="is_admin">管理者権限</label>
 					<input type="checkbox" id="is_admin" name="is_admin" <c:if test="${is_admin}">checked</c:if>/>
 				</div>
 

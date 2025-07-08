@@ -44,7 +44,7 @@
 
 				</div>
 				<div class="mx-auto py-2">
-					<label for="is_attend">登録者権限</label>
+					<label for="is_attend">管理者権限</label>
 					<input type="checkbox" id="is_attend" name="is_admin" <c:if test="${is_admin}">checked</c:if> />
 				</div>
 				<div class="mx-auto py-2">
