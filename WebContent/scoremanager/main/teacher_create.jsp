@@ -1,4 +1,4 @@
-<%-- 科目一覧JSP --%>
+<%-- 教師情報登録JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
