@@ -45,7 +45,7 @@
 					<br>
 
 					<%-- 画面設計書④ --%>
-					<a href="SubjectList.action">戻る</a>
+					<a href="TeacherList.action">戻る</a>
 				</div>
 			</form>
 		</section>
