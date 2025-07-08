@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import bean.ClassNum;
 import bean.Teacher;
 import dao.ClassNumDao;
+import dao.TeacherDao;
 import tool.Action;
 
 
@@ -24,55 +25,67 @@ public class ClassUpdateExecuteAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		// ローカル変数の指定
-		String class_num = ""; //クラス
-		String newclassnum = "";
-		ClassNum classnum = new ClassNum();
-		ClassNumDao classnumDao = new ClassNumDao();
+		String newClassNumStr = ""; //クラス
+		String oldClassNumStr = ""; //クラス
+		String teacherId = "";
+		ClassNum newClassNum = new ClassNum();
+		ClassNum oldClassNum = new ClassNum();
+
+		ClassNumDao classNumDao = new ClassNumDao();
+		TeacherDao teacherDao = new TeacherDao();
 		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
 
 
 		//リクエストパラメーターの取得
-		newclassnum = req.getParameter("newclassnum");
-		class_num = req.getParameter("classnum");
+		newClassNumStr = req.getParameter("newClassNum");
+		oldClassNumStr = req.getParameter("oldClassNum");
+		teacherId = req.getParameter("teacher");
 
-		//リクエストに値をセット
-		req.setAttribute("classnum", class_num);
+		//変更前のクラス情報取得
+		oldClassNum = classNumDao.get(oldClassNumStr, teacher.getSchool());
 
+
+
+		// newClassNumに入力情報を登録
+		newClassNum.setClass_num(newClassNumStr);
+		newClassNum.setSchool(teacher.getSchool());
+		newClassNum.setTeacher(teacherDao.get(teacherId));
+
+		// 保存とエラー処理
 		try {
-			Integer.parseInt(newclassnum);
-			if (classnumDao.get(class_num, teacher.getSchool())== null) { // クラスが重複している場合
-				errors.put("1", "クラスが存在していません");
-				// リクエストにエラーメッセージをセット
-				req.setAttribute("errors", errors);
-			} else if(classnumDao.get(newclassnum, teacher.getSchool())!= null){
-				errors.put("1", "クラス番号が重複しています");
-				req.setAttribute("errors", errors);
-			} else if(newclassnum == null || newclassnum.length() != 3) {
-				errors.put("1", "クラス番号は3文字で入力してください。");
-				req.setAttribute("errors", errors);
-			} else {
-				// subjectに科目情報をセット
-				classnum.setClass_num(class_num);
-				classnum.setSchool(teacher.getSchool());
+			// クラス番号が数字か判定
+			Integer.parseInt(newClassNumStr);
 
-				// saveメソッドで情報を登録
-				classnumDao.save(classnum, newclassnum);
+			if (classNumDao.get(oldClassNumStr, teacher.getSchool()) == null) { // 変更対象クラスが存在しない場合
+				errors.put("1", "クラスが存在していません");
+			} else if(classNumDao.get(newClassNumStr, teacher.getSchool()) != null && !newClassNumStr.equals(oldClassNum.getClass_num())) { // 記入したクラス番号が重複している場合
+				errors.put("1", "クラス番号が重複しています");
+			} else if(newClassNumStr == null || newClassNumStr.length() != 3) {
+				errors.put("1", "クラス番号は3文字で入力してください。");
+			} else {
+
+				// 問題がなければsaveメソッドで情報を登録
+				classNumDao.save(oldClassNum, newClassNum);
 			}
-			//成功しなかった時に元の値へ戻す
-			req.setAttribute("newclassnum", newclassnum);
-		} catch(Exception e) {
+		} catch(NumberFormatException e) {
 			errors.put("1", "クラス番号は数値で入力してください");
-			req.setAttribute("errors", errors);
-			req.setAttribute("newclassnum", class_num);
+
 		}
 
 
 
 		// JSPへフォワード
-		if (errors.isEmpty()) { // エラーメッセージがない場合
+		if (errors.isEmpty()) {
+			// エラーメッセージがない場合
 			// 登録完了画面にフォワード
 			req.getRequestDispatcher("class_update_done.jsp").forward(req, res);
-		} else { // エラーメッセージがある場合
+		} else {
+			// エラーメッセージがある場合
+			// エラーメッセージとnewClassNum・oldClassNum、教師一覧をJSPに渡す
+			req.setAttribute("errors", errors);
+			req.setAttribute("newClassNum", newClassNum);
+			req.setAttribute("oldClassNum", oldClassNum);
+			req.setAttribute("teacherList", teacherDao.filter(teacher.getSchool()));
 			// 登録画面にフォワード
 			req.getRequestDispatcher("class_update.jsp").forward(req, res);
 		}

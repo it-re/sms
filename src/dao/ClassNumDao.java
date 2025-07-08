@@ -238,7 +238,7 @@ public class ClassNumDao extends Dao {
 	 * @return 変更可否
 	 * @throws Exception
 	 */
-	public boolean save(ClassNum classNum, String newClassNum) throws Exception {
+	public boolean save(ClassNum classNum, ClassNum newClassNum) throws Exception {
 
 		// コネクションを確立
 		Connection connection = getConnection();
@@ -249,11 +249,12 @@ public class ClassNumDao extends Dao {
 
 		try {
 			// プリペアードステートメントにUPDATE文をセット
-			statement = connection.prepareStatement("update class_num set class_num = ? where school_cd = ? and class_num = ?");
-			statement.setString(1, newClassNum);
-			statement.setString(2, classNum.getSchool().getCd());
-			statement.setString(3, classNum.getClass_num());
-			statement.setString(3, classNum.getTeacher().getId());
+			statement = connection.prepareStatement("update class_num set class_num = ?, teacher_id = ? where school_cd = ? and class_num = ?");
+			statement.setString(1, newClassNum.getClass_num());
+			statement.setString(2, newClassNum.getTeacher().getId());
+			statement.setString(3, classNum.getSchool().getCd());
+			statement.setString(4, classNum.getClass_num());
+
 			// プリペアードステートメントを実行
 			count += statement.executeUpdate();
 			// プリペアードステートメントを閉じる
@@ -267,7 +268,7 @@ public class ClassNumDao extends Dao {
 
 			// 登録されている学生のクラスも変更
 			statement = connection.prepareStatement("update student set class_num = ? where school_cd = ? and class_num = ?");
-			statement.setString(1, newClassNum);
+			statement.setString(1, newClassNum.getClass_num());
 			statement.setString(2, classNum.getSchool().getCd());
 			statement.setString(3, classNum.getClass_num());
 			count += statement.executeUpdate();
@@ -282,7 +283,7 @@ public class ClassNumDao extends Dao {
 
 			// テストに登録されているクラスも変更
 			statement = connection.prepareStatement("update test set class_num = ? where school_cd = ? and class_num = ?");
-			statement.setString(1, newClassNum);
+			statement.setString(1, newClassNum.getClass_num());
 			statement.setString(2, classNum.getSchool().getCd());
 			statement.setString(3, classNum.getClass_num());
 			count += statement.executeUpdate();

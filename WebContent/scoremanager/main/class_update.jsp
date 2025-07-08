@@ -23,14 +23,23 @@
 
 				<%-- 画面設計書④ --%>
 				<div>
-					<label for="name">クラス名</label><br>
+					<label for="classNum">クラス番号</label><br>
 
 					<%-- 画面設計書⑤ --%>
-					<input class="form-control" type="text" id="num" name="newclassnum"
-										 value="${newclassnum}" required maxlength="3"/>
+					<input class="form-control" type="text" id="classNum" name="newClassNum"
+										 value=
+										 <c:choose>
+										 	<c:when test="${newClassNum != null}">
+										 		"${newClassNum.class_num}"
+										 	</c:when>
+										 	<c:otherwise>
+										 		"${oldClassNum.class_num}"
+										 	</c:otherwise>
+										 </c:choose>
+										 required maxlength="3"/>
 				</div>
 
-				<input type="hidden" name="classnum" value="${classnum}">
+				<input type="hidden" name="oldClassNum" value="${oldClassNum.class_num}">
 
 				<%-- エラーメッセージ① --%>
 				<div class="mt-2 text-warning">${errors.get("1")}</div>
@@ -44,11 +53,20 @@
 				<div class="col-4">
 					<label class="form-label" for="student-f1-select">担任</label>
 					<select class="form-select" id="student-f1-select" name="teacher">
-						<option value="">--------</option>
-					<c:forEach var="teacher" items="${teacherlist }">
-						<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
-						<option value="${teacher.id }" <c:if test="${teacher.id==chargeteacher.id }">selected</c:if>>${teacher.name }</option>
-					</c:forEach>
+						<c:forEach var="teacher" items="${teacherList }">
+							<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+							<option value="${teacher.id }"
+								<c:choose>
+								 	<c:when test="${newClassNum != null && teacher.id == newClassNum.teacher.id}">
+								 		selected
+								 	</c:when>
+								 	<c:when test="${newClassNum == null && teacher.id == oldClassNum.teacher.id}">
+								 		selected
+								 	</c:when>
+								</c:choose>>
+									${teacher.name }
+							</option>
+						</c:forEach>
 					</select>
 				</div>
 
