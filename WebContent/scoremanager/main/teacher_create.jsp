@@ -46,7 +46,7 @@
 				<div>
 					<label for="name">教師名</label>
 					<%-- ⑤ --%>
-					<input class="form-control" type="text" id="name" name="name" value="${name}" required maxlength="10" placeholder="教師名を入力してください" />
+					<input class="form-control" type="text" id="name" name="name" value="${name}" required maxlength="10" placeholder="氏名を入力してください" />
 				</div>
 				<br>
 
