@@ -27,6 +27,7 @@
 					<tr>
 						<th>ID</th>
 						<th>教師名</th>
+						<th>担当クラス</th>
 						<th class="text-center">管理者権限</th>
 						<c:if test="${isAdmin}">
 							<th></th>
@@ -39,6 +40,17 @@
 						<tr>
 							<td>${teacher.id}</td>
 							<td>${teacher.name}</td>
+							<td>
+							<%-- 担当クラスがある場合表示し、ない場合は「-」を表示 --%>
+							<c:choose>
+							<c:when test="${teacher.classNum != null}">
+								${teacher.classNum}
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
+							</td>
 							<td class="text-center">
 									<%-- 管理者権限がある場合「◯」ない場合は「×」を表示 --%>
 									<c:choose>

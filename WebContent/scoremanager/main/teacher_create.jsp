@@ -16,7 +16,7 @@
 		<section>
 
 			<%-- ① --%>
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">教師情報登録</h2>
 			<form action="TeacherCreateExecute.action" method="get">
 
 
@@ -27,21 +27,21 @@
 				<div>
 					<label for="id">教師ID</label>
 					<%-- ③ --%>
-					<input class="form-control" type="text" id="id" name="id" value="${id}" required maxlength="3" placeholder="IDを入力してください" />
+					<input class="form-control" type="text" id="id" name="id" value="${id}" required maxlength="10" placeholder="IDを入力してください" />
 				</div>
 
 				<%-- ④ --%>
 				<div>
 					<label for="pw">パスワード</label>
 					<%-- ⑤ --%>
-					<input class="form-control" type="text" id="pw" name="pw" value="${pw}" required maxlength="20" placeholder="パスワードを入力してください" />
+					<input class="form-control" type="text" id="pw" name="pw" value="${pw}" required maxlength="30" placeholder="パスワードを入力してください" />
 				</div>
 
 
 				<div>
 					<label for="name">氏名</label>
 					<%-- ⑤ --%>
-					<input class="form-control" type="text" id="name" name="name" value="${name}" required maxlength="20" placeholder="氏名を入力してください" />
+					<input class="form-control" type="text" id="name" name="name" value="${name}" required maxlength="10" placeholder="氏名を入力してください" />
 				</div>
 
 				<div class="mx-auto py-2">
@@ -57,7 +57,7 @@
 			</form>
 
 			<%-- ⑦ --%>
-			<a href="SubjectList.action">戻る</a>
+			<a href="TeacherList.action">戻る</a>
 
 		</section>
 	</c:param>

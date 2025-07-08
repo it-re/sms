@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.Teacher;
+import dao.ClassNumDao;
 import dao.TeacherDao;
 import tool.Action;
 
@@ -24,6 +25,7 @@ public class TeacherDeleteExecuteAction extends Action {
 		String teacher_id = ""; //科目コード
 		Teacher deleteTeacher=new Teacher();
 		TeacherDao teacherDao = new TeacherDao();
+		ClassNumDao classnumDao = new ClassNumDao();
 		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
 
 		//リクエストパラメーターの取得
@@ -39,17 +41,23 @@ public class TeacherDeleteExecuteAction extends Action {
 			deleteTeacher.setId(teacher_id);
 			deleteTeacher.setSchool(teacherDao.get(teacher_id).getSchool());
 
-			// saveメソッドで情報を登録
-			teacherDao.delete(deleteTeacher);
+
 		}
 
 
 
 		// JSPへフォワード
-		if (errors.isEmpty()) { // エラーメッセージがない場合
+		if (errors.isEmpty() && classnumDao.filter(deleteTeacher).size() == 0) {
+			// エラーメッセージがない場合
+			// saveメソッドで情報を登録
+			teacherDao.delete(deleteTeacher);
 			// 登録完了画面にフォワード
 			req.getRequestDispatcher("teacher_delete_done.jsp").forward(req, res);
-		} else { // エラーメッセージがある場合
+		} else if (classnumDao.filter(deleteTeacher).size() != 0) {
+			req.getRequestDispatcher("teacher_delete_error.jsp").forward(req, res);
+		} else {
+
+			// エラーメッセージがある場合
 			// 登録画面にフォワード
 			req.getRequestDispatcher("TeacherDelete.action").forward(req, res);
 		}
