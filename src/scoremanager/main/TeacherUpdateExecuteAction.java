@@ -30,6 +30,7 @@ public class TeacherUpdateExecuteAction extends Action {
 		/** リクエストパラメーターの取得 **/
 		id = req.getParameter("id");//jspから取得
 		name = req.getParameter("name");//jspから取得 ;
+		password = req.getParameter("password");
 		isAdminStr = req.getParameter("is_admin");//jspから取得
 
 
